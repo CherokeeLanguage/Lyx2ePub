@@ -28,12 +28,6 @@ public class Resource extends nl.siegmann.epublib.domain.Resource {
 		
 	}
 
-	public Resource(InputStream in, String fileName, int length, String href)
-			throws IOException {
-		super(in, fileName, length, href);
-		
-	}
-
 	public Resource(InputStream in, String href) throws IOException {
 		super(in, href);
 		
