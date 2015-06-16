@@ -7,11 +7,11 @@
 
 	"copyright": "Michael Joyner, All Rights Reserved. (CC BY 3.0 US)",
 	"coverImage": "artwork/ebook-cover-784x1024.png",
-	"description": "... description ...",
+	"description": "A Cherokee Language version of \"The Little Red Hen\". Suitable for young readers and students of the language. Cherokee Syllabary Only.",
 	"dest_epub": "epub/Usdi-Agigage-Jitaga-Agisi.epub",
 	"dest_epub_kindle": "epub/Usdi-Agigage-Jitaga-Agisi-Kindle.epub",
 	"sourcedir": "/home/mjoyner/Documents/ᏣᎳᎩ/Lessons/Action-Imitation-and-Fun-Series/02-The-Little-Red-Hen/",
-	"sourcelyx": "The-Little-Red-Chicken.lyx",
+	"sourcelyx": "Usdi-Agigage-Jitaga-Agisi.lyx",
 	"svg_mode": true,
 	"subjects": 
 	[
