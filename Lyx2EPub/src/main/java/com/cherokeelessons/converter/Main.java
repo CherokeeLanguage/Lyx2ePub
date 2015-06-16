@@ -97,9 +97,10 @@ public class Main implements Runnable {
 			new NumericEntityUnescaper());
 
 	public Main() {
-
+		settings=new Settings();
 	}
 
+	private Settings settings;
 	public static void main(String[] args) throws IOException {
 		new Main().run();
 		System.out.println("Done: " + new java.util.Date());
@@ -110,7 +111,7 @@ public class Main implements Runnable {
 	@Override
 	public void run() {
 
-		File lyxfile = new File(Consts.sourcedir, Consts.sourcelyx);
+		File lyxfile = new File(settings.sourcedir, settings.sourcelyx);
 		List<String> lines;
 		try {
 			lines = FileUtils.readLines(lyxfile);
@@ -200,13 +201,13 @@ public class Main implements Runnable {
 		System.out.println("[For Kindle] Processing " + sections.size()
 				+ " sections.");
 		epub = createEpub(Target.Kindle, sections);
-		file = new File(Consts.sourcedir, Consts.EPUB_Kindle);
+		file = new File(settings.sourcedir, settings.dest_epub_kindle);
 		saveEpub(file, epub);
 
 		System.out.println("[For Smashwords] Processing " + sections.size()
 				+ " sections.");
 		epub = createEpub(Target.Smashwords, sections);
-		file = new File(Consts.sourcedir, Consts.EPUB);
+		file = new File(settings.sourcedir, settings.dest_epub);
 		saveEpub(file, epub);
 	}
 	
@@ -532,13 +533,13 @@ public class Main implements Runnable {
 	private Resource getCover() {
 		Resource coverPage = null;
 		try {
-			String image = FilenameUtils.getName(Consts.CoverImage);
+			String image = FilenameUtils.getName(settings.coverImage);
 			InputStream is_coverXhtml = getClass().getResourceAsStream(
 					"/data/epub/cover.xhtml");
 			String xhtml = IOUtils.toString(is_coverXhtml);
 			InputStream is_coverImg;
-			is_coverImg = FileUtils.openInputStream(new File(Consts.sourcedir,
-					Consts.CoverImage));
+			is_coverImg = FileUtils.openInputStream(new File(settings.sourcedir,
+					settings.coverImage));
 			BufferedImage bimg = ImageIO.read(is_coverImg);
 			int width = bimg.getWidth();
 			int height = bimg.getHeight();
@@ -615,10 +616,10 @@ public class Main implements Runnable {
 		Resource cover = null;
 		try {
 			InputStream cd;
-			cd = FileUtils.openInputStream(new File(Consts.sourcedir,
-					Consts.CoverImage));
+			cd = FileUtils.openInputStream(new File(settings.sourcedir,
+					settings.coverImage));
 			cover = new Resource(cd, Consts.IMAGES
-					+ FilenameUtils.getName(Consts.CoverImage));
+					+ FilenameUtils.getName(settings.coverImage));
 			IOUtils.closeQuietly(cd);
 			cover.setTitle("Cover Image");
 		} catch (IOException e) {
@@ -638,12 +639,12 @@ public class Main implements Runnable {
 
 		Identifier uid = new Identifier();
 		uid.setScheme("uid");
-		uid.setValue(Consts.ISBN_EPUB_META);
+		uid.setValue(settings.ISBN_EPUB_META());
 		idList.add(uid);
 
 		Identifier isbn = new Identifier();
 		isbn.setScheme(Identifier.Scheme.ISBN);
-		isbn.setValue(Consts.ISBN_EPUB_META);
+		isbn.setValue(settings.ISBN_EPUB_META());
 		isbn.setBookId(true);
 		idList.add(isbn);
 
@@ -654,7 +655,7 @@ public class Main implements Runnable {
 				Date.Event.MODIFICATION);
 		meta.addDate(date);
 
-		meta.addDescription(Consts.description);
+		meta.addDescription(settings.description);
 
 		meta.setLanguage("en");
 
@@ -679,7 +680,7 @@ public class Main implements Runnable {
 		subjList.add("ᎠᎪᎵᏰᏗ");
 		meta.setSubjects(subjList);
 
-		meta.addTitle(Consts.TITLE);
+		meta.addTitle(settings.title);
 		if (!Target.Kindle.equals(target)) {
 			meta.addPublisher("Smashwords, Inc.");
 		}
@@ -763,7 +764,7 @@ public class Main implements Runnable {
 				break whichparsing;
 			}
 			if (line.startsWith("ISBN: ")) {
-				line = Consts.ISBN_EPUB_FORMATTED;
+				line = settings.ISBN_formatted;
 			}
 			if (line.startsWith("<cell ")) {
 				tmp.append(processCell(line, iline, state));
@@ -1232,7 +1233,7 @@ public class Main implements Runnable {
 							template += "<!-- epub:clear page -->";
 						}
 
-						File img = new File(Consts.sourcedir, src);
+						File img = new File(settings.sourcedir, src);
 						String iext = FilenameUtils.getExtension(img.getName());
 						String simg = String.format("%03d.%s", img_counter,
 								iext);

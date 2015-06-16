@@ -2,14 +2,6 @@ package com.cherokeelessons.converter;
 
 public class Consts {
 
-	public static String description = "... description ...";
-	public static final String ISBN_EPUB_FORMATTED = "ISBN: 978-0-000-00000-0";
-	public static final String ISBN_EPUB_META = ISBN_EPUB_FORMATTED.replaceAll("[^0-9]", "");
-	
-	public static final String sourcedir = "./";
-	public static final String sourcelyx = "input.lyx";
-	public static final String EPUB = "epub/ouput.epub";
-	public static final String EPUB_Kindle = "epub/output-Kindle.epub";
 	public static final String HtmlSoftHyphen = "&shy;";
 	public static final String[] SYLLABARY_arr;
 	static {
@@ -42,8 +34,6 @@ public class Consts {
 	public static final String MISC = "Misc/";
 	public static final String META_INF = "/META-INF/";
 
-	public static final String CoverImage = "artwork/ebook-cover-784x1024.png";
 	public static final String StyleSheet = "/data/epub/epub-default.css";
 	public static final String KindleStyleSheet = "/data/epub/epub-kindle.css";
-	public static final String TITLE = "... title ...";
 }
