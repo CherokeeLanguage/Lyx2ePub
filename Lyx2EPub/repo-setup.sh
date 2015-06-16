@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 
 export REPO="$(basename "$(pwd)")"
 
-echo "Running: 'cd ~; git git init --bare --share '${REPO}'; exit'"
+echo "Running: 'cd ~; git init --bare --share '${REPO}'; exit'"
 ssh git@www.cherokeelessons.com 'cd ~; git init --bare --share '${REPO}'; exit'
 
 git remote add origin "ssh://git@www.cherokeelessons.com/home/git/${REPO}/" || true
