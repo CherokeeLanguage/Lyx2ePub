@@ -60,5 +60,6 @@ public class Resource extends nl.siegmann.epublib.domain.Resource {
 	}
 
 	
+	
 
 }

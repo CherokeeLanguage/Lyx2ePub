@@ -1,6 +1,10 @@
+plugins {
+  id "us.kirchmeier.capsule" version "1.0-rc1"
+}
+
 apply plugin: "java"
 apply plugin: "eclipse-wtp"
-
+  
 repositories {
         mavenCentral()
         jcenter()
@@ -8,6 +12,10 @@ repositories {
         	url "https://github.com/psiegman/mvn-repo/raw/master/releases"
         }
     }
+    
+task fatCapsule(type: FatCapsule) {
+  applicationClass 'com.cherokeelessons.converter.Main'
+}
     
 version 1.0
 
@@ -25,3 +33,8 @@ dependencies {
         compile 'net.lingala.zip4j:zip4j:1.3.2'
     }
 
+configurations.all {
+  resolutionStrategy {
+  	force 'xml-apis:xml-apis:1.4.01'
+  }
+}

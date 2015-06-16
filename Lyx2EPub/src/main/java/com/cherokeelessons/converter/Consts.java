@@ -2,14 +2,14 @@ package com.cherokeelessons.converter;
 
 public class Consts {
 
-	public static String description = "One of the keys to acquiring a new language is to learn the patterns that make up the language. Simply learning phrases so you can speak “pidgin” Cherokee is not learning Cherokee. You need to learn the fundamentals of the language on how words are put together to be able to understand and communicate in the language. There are many degrees of meaning that different word parts provide and if you don't learn these shades of meaning up front and how they are expressed you will never progress beyond simple memorized phrases and never obtain satisfaction with the language. While each person's skill will differ, one should strive to gain enough understanding of the mechanics of language to be able to comprehend and communicate effectively. The goal of this material is to provide you a solid structural foundation on how Cherokee works. You will learn how words are put together in basic sentences and how to form new words for ideas not listed in the dictionary. You will be able to parse out the most important meanings from more complex writings and sayings found in the real world. Eventually you will be able to think and dream in Cherokee as well. None of these things are guaranteed, but with enough effort, and a good path to follow in learning the fundamental patterns hidden within the language, there is a good chance you will master the Cherokee language and possibly much more.";
-	public static final String ISBN_EPUB_FORMATTED = "ISBN: 978-1-311-16595-4";
+	public static String description = "... description ...";
+	public static final String ISBN_EPUB_FORMATTED = "ISBN: 978-0-000-00000-0";
 	public static final String ISBN_EPUB_META = ISBN_EPUB_FORMATTED.replaceAll("[^0-9]", "");
 	
-	public static final String sourcedir = "/home/mjoyner/Documents/ᏣᎳᎩ/Lessons/Cherokee Language Lessons-Volume 1";
-	public static final String sourcelyx = "Cherokee Language Lessons.lyx";
-	public static final String EPUB = "epub/Cherokee Language Lessons.epub";
-	public static final String EPUB_Kindle = "epub/Cherokee Language Lessons-Kindle.epub";
+	public static final String sourcedir = "./";
+	public static final String sourcelyx = "input.lyx";
+	public static final String EPUB = "epub/ouput.epub";
+	public static final String EPUB_Kindle = "epub/output-Kindle.epub";
 	public static final String HtmlSoftHyphen = "&shy;";
 	public static final String[] SYLLABARY_arr;
 	static {
@@ -45,5 +45,5 @@ public class Consts {
 	public static final String CoverImage = "artwork/ebook-cover-784x1024.png";
 	public static final String StyleSheet = "/data/epub/epub-default.css";
 	public static final String KindleStyleSheet = "/data/epub/epub-kindle.css";
-	public static final String TITLE = "Cherokee Language Lessons";
+	public static final String TITLE = "... title ...";
 }
