@@ -1,0 +1,39 @@
+{
+	"ISBN_formatted": "ISBN: 978-0-000-00000-0",
+	"authors": 
+	[
+		"Michael Joyner"
+	],
+
+	"copyright": "Michael Joyner, All Rights Reserved. (CC BY 3.0 US)",
+	"coverImage": "artwork/ebook-cover-784x1024.png",
+	"description": "... description ...",
+	"dest_epub": "epub/Usdi-Agigage-Jitaga-Agisi.epub",
+	"dest_epub_kindle": "epub/Usdi-Agigage-Jitaga-Agisi-Kindle.epub",
+	"sourcedir": "/home/mjoyner/Documents/ᏣᎳᎩ/Lessons/Action-Imitation-and-Fun-Series/02-The-Little-Red-Hen/",
+	"sourcelyx": "The-Little-Red-Chicken.lyx",
+	"svg_mode": true,
+	"subjects": 
+	[
+		"Foreign Language Study, Native American Languages",
+		"FOR031000",
+		"Language Arts and Disciplines, Readers",
+		"LAN012000",
+		"Language Arts and Disciplines, Vocabulary",
+		"LAN021000",
+		"Fiction, General",
+		"FIC000000",
+		"Native American Languages",
+		"Cherokee",
+		"Cherokee Language",
+		"ᏣᎳᎩ",
+		"ᎦᏬᏂᎯᏍᏗ",
+		"ᎠᎪᎵᏰᏗ",
+		"ᏧᏬᎵᏗ ᏗᎪᏪᎵ",
+		"ᎤᏬᎵᏗ ᎪᏪᎵ",
+		"ᏗᎪᏪᎵ"
+	],
+
+	"title": "The Little Red Hen | Usdi Agigage Jitaga Agisi | ᎤᏍᏗ ᎠᎩᎠᎨ ᏥᏔᎦ ᎠᎩᏏ",
+	"url": "http://www.CherokeeLessons.com/"
+}

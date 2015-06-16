@@ -48,8 +48,6 @@ import com.cherokeelessons.epub.Resource;
 
 public class Main implements Runnable {
 
-	private static final boolean svg_mode = true;
-
 	/*
 	 * 400P
 	 */
@@ -64,8 +62,8 @@ public class Main implements Runnable {
 	/*
 	 * 576P
 	 */
-	private static final int IMG_HEIGHT = 1024;
-	private static final int IMG_WIDTH = 576;
+//	private static final int IMG_HEIGHT = 1024;
+//	private static final int IMG_WIDTH = 576;
 	/*
 	 * 720P
 	 */
@@ -74,14 +72,14 @@ public class Main implements Runnable {
 	/*
 	 * 1080P
 	 */
-	// private static final int IMG_HEIGHT = 1920;
-	// private static final int IMG_WIDTH = 1080;
+	 private static final int IMG_HEIGHT = 1920;
+	 private static final int IMG_WIDTH = 1080;
 
 	/*
 	 * SQUARE: 1024
 	 */
-	// private static final int IMG_HEIGHT = 1024;
-	// private static final int IMG_WIDTH = 1024;
+//	 private static final int IMG_HEIGHT = 1024;
+//	 private static final int IMG_WIDTH = 1024;
 
 	private static boolean skipimages = false;
 	private static boolean dofontspans = true;
@@ -102,6 +100,13 @@ public class Main implements Runnable {
 
 	private Settings settings;
 	public static void main(String[] args) throws IOException {
+		File settings_file = new File("settings.sample.json");
+		JsonConverter json = new JsonConverter();
+		json.toJson(settings_file, new Settings());
+		settings_file = new File("settings.json");
+		if (!settings_file.exists()) {
+			json.toJson(settings_file, new Settings());
+		}
 		new Main().run();
 		System.out.println("Done: " + new java.util.Date());
 	}
@@ -110,7 +115,8 @@ public class Main implements Runnable {
 
 	@Override
 	public void run() {
-
+		JsonConverter json = new JsonConverter();
+		settings = json.fromJson(new File("settings.json"), Settings.class);
 		File lyxfile = new File(settings.sourcedir, settings.sourcelyx);
 		List<String> lines;
 		try {
@@ -634,7 +640,7 @@ public class Main implements Runnable {
 
 		Identifier url = new Identifier();
 		url.setScheme(Identifier.Scheme.URL);
-		url.setValue("http://www.CherokeeLessons.com/");
+		url.setValue(settings.url);
 		idList.add(url);
 
 		Identifier uid = new Identifier();
@@ -648,8 +654,10 @@ public class Main implements Runnable {
 		isbn.setBookId(true);
 		idList.add(isbn);
 
-		Author author = new Author("Michael Joyner");
-		meta.addAuthor(author);
+		for(String str_author: settings.authors) {
+			Author author = new Author(str_author);
+			meta.addAuthor(author);
+		}
 
 		Date date = new Date(Calendar.getInstance().getTime(),
 				Date.Event.MODIFICATION);
@@ -661,23 +669,12 @@ public class Main implements Runnable {
 
 		ArrayList<String> rights = new ArrayList<String>();
 		rights.add(Consts.copy
-				+ "Michael Joyner, All Rights Reserved. (CC BY 3.0 US)");
+				+ settings.copyright);
 
 		ArrayList<String> subjList = new ArrayList<String>();
-		subjList.add("FOR031000");
-		subjList.add("Foreign Language Study, Native American Languages");
-		// subjList.add("LAN012000");
-		// subjList.add("Language Arts and Disciplines, Readers");
-		subjList.add("LAN021000");
-		subjList.add("Language Arts and Disciplines, Vocabulary");
-		// subjList.add("FIC000000");
-		// subjList.add("Fiction, General");
-		subjList.add("Native American Languages");
-		subjList.add("Cherokee");
-		subjList.add("Cherokee Language");
-		subjList.add("ᏣᎳᎩ");
-		subjList.add("ᎦᏬᏂᎯᏍᏗ");
-		subjList.add("ᎠᎪᎵᏰᏗ");
+		for (String subj: settings.subjects) {
+			subjList.add(subj);
+		}
 		meta.setSubjects(subjList);
 
 		meta.addTitle(settings.title);
@@ -1146,7 +1143,7 @@ public class Main implements Runnable {
 				break whichparsing;
 			}
 			if (line.startsWith("\\begin_inset Graphics")) {
-				boolean current_svg_mode = svg_mode;
+				boolean current_svg_mode = settings.svg_mode;
 				String src = "";
 				String lyx_width = "";
 				String lyx_height = "";
