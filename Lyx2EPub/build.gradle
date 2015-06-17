@@ -13,7 +13,7 @@ repositories {
         }
     }
     
-task fatCapsule(type: FatCapsule) {
+task fatjar(type: FatCapsule) {
   applicationClass 'com.cherokeelessons.converter.Main'
 }
     
