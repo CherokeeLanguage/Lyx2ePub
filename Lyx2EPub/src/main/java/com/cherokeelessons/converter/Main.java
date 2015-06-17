@@ -54,6 +54,7 @@ public class Main implements Runnable {
 	// private static final int IMG_HEIGHT = 711;
 	// private static final int IMG_WIDTH = 400;
 
+	private static final String IMAGE_TMP = "image-tmp";
 	/*
 	 * 480P
 	 */
@@ -388,7 +389,7 @@ public class Main implements Runnable {
 					for (String image : images) {
 						img_counter++;
 						String image_name = FilenameUtils.getName(image);
-						final File lfile = new File("output", image);
+						final File lfile = new File(IMAGE_TMP, image);
 						try (InputStream imageis = FileUtils
 								.openInputStream(lfile)) {
 							Resource img = new Resource(imageis, Consts.IMAGES
@@ -1234,7 +1235,7 @@ public class Main implements Runnable {
 						String iext = FilenameUtils.getExtension(img.getName());
 						String simg = String.format("%03d.%s", img_counter,
 								iext);
-						File local_img = new File("output", simg);
+						File local_img = new File(IMAGE_TMP, simg);
 						img_counter++;
 						if (!img.canRead()) {
 							break;
