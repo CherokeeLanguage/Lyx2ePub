@@ -3,63 +3,40 @@
 /* FreeSerif */
 @font-face {
 	font-family: freeserif;
-	src: url("../Fonts/FreeSerif.ttf");
+	src: url("../Fonts/FreeSerif.otf");
 	font-weight: normal;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: freeserif;
-	src: url("../Fonts/FreeSerifBold.ttf");
+	src: url("../Fonts/FreeSerifBold.otf");
 	font-weight: bold;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: freeserif;
-	src: url("../Fonts/FreeSerifBoldItalic.ttf");
+	src: url("../Fonts/FreeSerifBoldItalic.otf");
 	font-weight: bold;
 	font-style: italic;
 }
 
 @font-face {
 	font-family: freeserif;
-	src: url("../Fonts/FreeSerifItalic.ttf");
+	src: url("../Fonts/FreeSerifItalic.otf");
 	font-weight: normal;
 	font-style: italic;
 }
 
-/* FreeSans */
-/* @font-face { */
-/* 	font-family: freesans; */
-/* 	src: url("../Fonts/FreeSans.ttf"); */
-/* 	font-weight: normal; */
-/* 	font-style: normal; */
-/* } */
-
-/* @font-face { */
-/* 	font-family: freesans; */
-/* 	src: url("../Fonts/FreeSansBold.ttf"); */
-/* 	font-weight: bold; */
-/* 	font-style: normal; */
-/* } */
-
-/* @font-face { */
-/* 	font-family: freesans; */
-/* 	src: url("../Fonts/FreeSansBoldOblique.ttf"); */
-/* 	font-weight: bold; */
-/* 	font-style: oblique; */
-/* } */
-
-/* @font-face { */
-/* 	font-family: freesans; */
-/* 	src: url("../Fonts/FreeSansOblique.ttf"); */
-/* 	font-weight: normal; */
-/* 	font-style: oblique; */
-/* } */
 body {
+	font-family: serif;
 	font-size: 100%;
 	text-align: justify;	
+}
+
+body * {
+	font-family: inherit;
 }
 
 .chrserif {
