@@ -1,5 +1,6 @@
 package com.cherokeelessons.converter;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ public class Settings implements Serializable {
 		return ISBN_formatted.replaceAll("[^0-9]", "");
 	}
 
+	public String destdir;
 	public String sourcedir;
 	public String sourcelyx;
 	public String dest_epub;
@@ -25,6 +27,7 @@ public class Settings implements Serializable {
 	public String copyright;
 	public List<String> subjects;
 	public boolean svg_mode;
+	public String image_tmp;
 
 	public Settings() {
 		description = "... description ...";
@@ -34,6 +37,8 @@ public class Settings implements Serializable {
 		sourcelyx = "input.lyx";
 		dest_epub = "epub/ouput.epub";
 		dest_epub_kindle = "epub/output-Kindle.epub";
+		
+		image_tmp = new File(new File(dest_epub).getParent(),"image-tmp").getPath();
 
 		coverImage = "artwork/ebook-cover-784x1024.png";
 		title = "... title ...";

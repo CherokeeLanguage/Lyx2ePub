@@ -54,7 +54,6 @@ public class Main implements Runnable {
 	// private static final int IMG_HEIGHT = 711;
 	// private static final int IMG_WIDTH = 400;
 
-	private static final String IMAGE_TMP = "image-tmp";
 	/*
 	 * 480P
 	 */
@@ -103,10 +102,11 @@ public class Main implements Runnable {
 	public static void main(String[] args) throws IOException {
 		File settings_file = new File("settings.sample.json");
 		JsonConverter json = new JsonConverter();
-		json.toJson(settings_file, new Settings());
+		Settings settingsTemplate = new Settings();
+		json.toJson(settings_file, settingsTemplate);
 		settings_file = new File("settings.json");
 		if (!settings_file.exists()) {
-			json.toJson(settings_file, new Settings());
+			json.toJson(settings_file, settingsTemplate);
 		}
 		new Main().run();
 		System.out.println("Done: " + new java.util.Date());
@@ -118,6 +118,10 @@ public class Main implements Runnable {
 	public void run() {
 		JsonConverter json = new JsonConverter();
 		settings = json.fromJson(new File("settings.json"), Settings.class);
+		if (StringUtils.isEmpty(settings.destdir)){
+			settings.destdir=settings.sourcedir;
+		}
+		settings.image_tmp=new File(settings.destdir, settings.image_tmp).getPath();
 		File lyxfile = new File(settings.sourcedir, settings.sourcelyx);
 		List<String> lines;
 		try {
@@ -208,13 +212,13 @@ public class Main implements Runnable {
 		System.out.println("[For Kindle] Processing " + sections.size()
 				+ " sections.");
 		epub = createEpub(Target.Kindle, sections);
-		file = new File(settings.sourcedir, settings.dest_epub_kindle);
+		file = new File(settings.destdir, settings.dest_epub_kindle);
 		saveEpub(file, epub);
 
 		System.out.println("[For Smashwords] Processing " + sections.size()
 				+ " sections.");
 		epub = createEpub(Target.Smashwords, sections);
-		file = new File(settings.sourcedir, settings.dest_epub);
+		file = new File(settings.destdir, settings.dest_epub);
 		saveEpub(file, epub);
 	}
 	
@@ -389,7 +393,7 @@ public class Main implements Runnable {
 					for (String image : images) {
 						img_counter++;
 						String image_name = FilenameUtils.getName(image);
-						final File lfile = new File(IMAGE_TMP, image);
+						final File lfile = new File(settings.image_tmp, image);
 						try (InputStream imageis = FileUtils
 								.openInputStream(lfile)) {
 							Resource img = new Resource(imageis, Consts.IMAGES
@@ -1235,7 +1239,7 @@ public class Main implements Runnable {
 						String iext = FilenameUtils.getExtension(img.getName());
 						String simg = String.format("%03d.%s", img_counter,
 								iext);
-						File local_img = new File(IMAGE_TMP, simg);
+						File local_img = new File(settings.image_tmp, simg);
 						img_counter++;
 						if (!img.canRead()) {
 							break;
