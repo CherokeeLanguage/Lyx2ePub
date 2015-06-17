@@ -585,12 +585,12 @@ ol ol ol ol {
 	display: inline;
 	text-align: inherit;
 	font-size: inherit;
-	indent: 0px;
+	text-indent: 0px;
 }
 
 .Text {
 	display: inline;
 	text-align: inherit;
 	font-size: inherit;
-	indent: 0px;
+	text-indent: 0px;
 }

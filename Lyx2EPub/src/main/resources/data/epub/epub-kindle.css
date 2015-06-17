@@ -2,28 +2,28 @@
 
 /* FreeSerif */
 @font-face {
-	font-family: freeserif;
+	font-family: "ᏣᎳᎩ";
 	src: url("../Fonts/FreeSerif.otf");
 	font-weight: normal;
 	font-style: normal;
 }
 
 @font-face {
-	font-family: freeserif;
+	font-family: "ᏣᎳᎩ";
 	src: url("../Fonts/FreeSerifBold.otf");
 	font-weight: bold;
 	font-style: normal;
 }
 
 @font-face {
-	font-family: freeserif;
+	font-family: "ᏣᎳᎩ";
 	src: url("../Fonts/FreeSerifBoldItalic.otf");
 	font-weight: bold;
 	font-style: italic;
 }
 
 @font-face {
-	font-family: freeserif;
+	font-family: "ᏣᎳᎩ";
 	src: url("../Fonts/FreeSerifItalic.otf");
 	font-weight: normal;
 	font-style: italic;
@@ -40,7 +40,7 @@ body * {
 }
 
 .chrserif {
-	font-family: freeserif;
+	font-family: "ᏣᎳᎩ";
 }
 
 .rightblock {
@@ -177,7 +177,7 @@ body * {
 }
 
 .family_default {
-	font-family: freeserif;
+	font-family: "ᏣᎳᎩ";
 }
 
 .nested {
@@ -275,7 +275,7 @@ ul {
 }
 
 .Title {
-	font-family: freeserif;
+	font-family: "ᏣᎳᎩ";
 	font-size: 158%;
 	font-style: normal;
 	font-variant: normal;
@@ -288,7 +288,7 @@ ul {
 }
 
 .Author {
-	font-family: freeserif;
+	font-family: "ᏣᎳᎩ";
 	font-size: 117%;
 	font-style: normal;
 	font-variant: normal;
@@ -451,7 +451,7 @@ ul {
 }
 
 td {
-	font-family: freeserif;
+	font-family: "ᏣᎳᎩ";
 	font-size: .9em;
 	background-color: white;
 }
@@ -585,12 +585,12 @@ ol ol ol ol {
 	display: inline;
 	text-align: inherit;
 	font-size: inherit;
-	indent: 0px;
+	text-indent: 0px;
 }
 
 .Text {
 	display: inline;
 	text-align: inherit;
 	font-size: inherit;
-	indent: 0px;
+	text-indent: 0px;
 }
