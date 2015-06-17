@@ -220,6 +220,9 @@ public class Main implements Runnable {
 		epub = createEpub(Target.Smashwords, sections);
 		file = new File(settings.destdir, settings.dest_epub);
 		saveEpub(file, epub);
+		
+		File image_tmp = new File(settings.image_tmp);
+		FileUtils.deleteQuietly(image_tmp);
 	}
 	
 	public void appleFy(File file) {
