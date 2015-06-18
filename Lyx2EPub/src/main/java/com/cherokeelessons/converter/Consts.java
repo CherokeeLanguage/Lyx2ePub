@@ -21,7 +21,7 @@ public class Consts {
 			+ "	content=\"application/xhtml+xml; charset=UTF-8\" />\n"
 			+ "<title>.</title>\n"
 			+ "<link rel=\"stylesheet\" type=\"text/css\" href=\"../Styles/stylesheet.css\" />\n"
-			+ "</head>" + "\n<body>\n";
+			+ "</head>" + "\n<body>";
 	public static final String STOCK_FOOTER = "\n</body>" + "\n</html>";
 
 	// sigil derived locations for common assets

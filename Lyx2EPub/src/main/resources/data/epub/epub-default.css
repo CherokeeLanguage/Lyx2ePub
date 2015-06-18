@@ -3,28 +3,28 @@
 /* FreeSerif */
 @font-face {
 	font-family: freeserif;
-	src: url("../Fonts/FreeSerif.otf");
+	src: url("../Fonts/FreeSerif.ttf");
 	font-weight: normal;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: freeserif;
-	src: url("../Fonts/FreeSerifBold.otf");
+	src: url("../Fonts/FreeSerifBold.ttf");
 	font-weight: bold;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: freeserif;
-	src: url("../Fonts/FreeSerifBoldItalic.otf");
+	src: url("../Fonts/FreeSerifBoldItalic.ttf");
 	font-weight: bold;
 	font-style: italic;
 }
 
 @font-face {
 	font-family: freeserif;
-	src: url("../Fonts/FreeSerifItalic.otf");
+	src: url("../Fonts/FreeSerifItalic.ttf");
 	font-weight: normal;
 	font-style: italic;
 }

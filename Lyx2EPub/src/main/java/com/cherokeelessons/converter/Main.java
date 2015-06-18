@@ -57,29 +57,29 @@ public class Main implements Runnable {
 	/*
 	 * 480P
 	 */
-//	 private static final int IMG_HEIGHT = 853;
-//	 private static final int IMG_WIDTH = 480;
+	// private static final int IMG_HEIGHT = 853;
+	// private static final int IMG_WIDTH = 480;
 	/*
 	 * 576P
 	 */
-//	private static final int IMG_HEIGHT = 1024;
-//	private static final int IMG_WIDTH = 576;
+	// private static final int IMG_HEIGHT = 1024;
+	// private static final int IMG_WIDTH = 576;
 	/*
 	 * 720P
 	 */
-//	 private static final int IMG_HEIGHT = 1280;
-//	 private static final int IMG_WIDTH = 720;
+	// private static final int IMG_HEIGHT = 1280;
+	// private static final int IMG_WIDTH = 720;
 	/*
 	 * 1080P
 	 */
-	 private static final int IMG_HEIGHT = 1920;
-	 private static final int IMG_WIDTH = 1080;
+	private static final int IMG_HEIGHT = 1920;
+	private static final int IMG_WIDTH = 1080;
 
 	/*
 	 * SQUARE: 1024
 	 */
-//	 private static final int IMG_HEIGHT = 1024;
-//	 private static final int IMG_WIDTH = 1024;
+	// private static final int IMG_HEIGHT = 1024;
+	// private static final int IMG_WIDTH = 1024;
 
 	private static boolean skipimages = false;
 	private static boolean dofontspans = true;
@@ -95,10 +95,11 @@ public class Main implements Runnable {
 			new NumericEntityUnescaper());
 
 	public Main() {
-		settings=new Settings();
+		settings = new Settings();
 	}
 
 	private Settings settings;
+
 	public static void main(String[] args) throws IOException {
 		File settings_file = new File("settings.sample.json");
 		JsonConverter json = new JsonConverter();
@@ -118,10 +119,11 @@ public class Main implements Runnable {
 	public void run() {
 		JsonConverter json = new JsonConverter();
 		settings = json.fromJson(new File("settings.json"), Settings.class);
-		if (StringUtils.isEmpty(settings.destdir)){
-			settings.destdir=settings.sourcedir;
+		if (StringUtils.isEmpty(settings.destdir)) {
+			settings.destdir = settings.sourcedir;
 		}
-		settings.image_tmp=new File(settings.destdir, settings.image_tmp).getPath();
+		settings.image_tmp = new File(settings.destdir, settings.image_tmp)
+				.getPath();
 		File lyxfile = new File(settings.sourcedir, settings.sourcelyx);
 		List<String> lines;
 		try {
@@ -220,22 +222,24 @@ public class Main implements Runnable {
 		epub = createEpub(Target.Smashwords, sections);
 		file = new File(settings.destdir, settings.dest_epub);
 		saveEpub(file, epub);
-		
+
 		File image_tmp = new File(settings.image_tmp);
 		FileUtils.deleteQuietly(image_tmp);
 	}
-	
+
 	public void appleFy(File file) {
 		try {
 			ZipFile zip = new ZipFile(file);
-			ZipParameters parameters=new ZipParameters();
-			String fileNameInZip = Consts.META_INF+"com.apple.ibooks.display-options.xml";
-			if (fileNameInZip.startsWith("/")){
-				fileNameInZip=StringUtils.substring(fileNameInZip, 1);
+			ZipParameters parameters = new ZipParameters();
+			String fileNameInZip = Consts.META_INF
+					+ "com.apple.ibooks.display-options.xml";
+			if (fileNameInZip.startsWith("/")) {
+				fileNameInZip = StringUtils.substring(fileNameInZip, 1);
 			}
 			parameters.setFileNameInZip(fileNameInZip);
 			parameters.setSourceExternalStream(true);
-			InputStream is=getClass().getResourceAsStream("/data/epub/com.apple.ibooks.display-options.xml");			
+			InputStream is = getClass().getResourceAsStream(
+					"/data/epub/com.apple.ibooks.display-options.xml");
 			zip.addStream(is, parameters);
 			IOUtils.closeQuietly(is);
 		} catch (ZipException e) {
@@ -273,15 +277,15 @@ public class Main implements Runnable {
 		Resource cover = getFrontCoverImage();
 		epub.setCoverImage(cover);
 
-		 res.add(getFont("FreeSerif.otf"));
-		 res.add(getFont("FreeSerifBold.otf"));
-		 res.add(getFont("FreeSerifBoldItalic.otf"));
-		 res.add(getFont("FreeSerifItalic.otf"));
+		// res.add(getFont("FreeSerif.otf"));
+		// res.add(getFont("FreeSerifBold.otf"));
+		// res.add(getFont("FreeSerifBoldItalic.otf"));
+		// res.add(getFont("FreeSerifItalic.otf"));
 
-//		res.add(getFont("FreeSerif.ttf"));
-//		res.add(getFont("FreeSerifBold.ttf"));
-//		res.add(getFont("FreeSerifBoldItalic.ttf"));
-//		res.add(getFont("FreeSerifItalic.ttf"));
+		res.add(getFont("FreeSerif.ttf"));
+		res.add(getFont("FreeSerifBold.ttf"));
+		res.add(getFont("FreeSerifBoldItalic.ttf"));
+		res.add(getFont("FreeSerifItalic.ttf"));
 
 		// res.add(getFont("chr.ttf"));
 		// res.add(getFont("chrb.ttf"));
@@ -537,9 +541,10 @@ public class Main implements Runnable {
 		// build alternating regex, longest to shortest, set to try and join
 		// neighboring matched sections!
 		String regex = "((" + chr + "|" + tn + "|" + br + ")+)";
-
-		section = section.replaceAll(regex,
-				"<span class=\"chrserif\">$1</span>");
+		String span1 = "<span class=\"chrserif\">";
+		// String span1 = "<span style=\"font-family: freeserif;\">";
+		String span2 = "</span>";
+		section = section.replaceAll(regex, span1 + "$1" + span2);
 
 		return section;
 	}
@@ -552,8 +557,8 @@ public class Main implements Runnable {
 					"/data/epub/cover.xhtml");
 			String xhtml = IOUtils.toString(is_coverXhtml);
 			InputStream is_coverImg;
-			is_coverImg = FileUtils.openInputStream(new File(settings.sourcedir,
-					settings.coverImage));
+			is_coverImg = FileUtils.openInputStream(new File(
+					settings.sourcedir, settings.coverImage));
 			BufferedImage bimg = ImageIO.read(is_coverImg);
 			int width = bimg.getWidth();
 			int height = bimg.getHeight();
@@ -662,7 +667,7 @@ public class Main implements Runnable {
 		isbn.setBookId(true);
 		idList.add(isbn);
 
-		for(String str_author: settings.authors) {
+		for (String str_author : settings.authors) {
 			Author author = new Author(str_author);
 			meta.addAuthor(author);
 		}
@@ -676,11 +681,10 @@ public class Main implements Runnable {
 		meta.setLanguage("en");
 
 		ArrayList<String> rights = new ArrayList<String>();
-		rights.add(Consts.copy
-				+ settings.copyright);
+		rights.add(Consts.copy + settings.copyright);
 
 		ArrayList<String> subjList = new ArrayList<String>();
-		for (String subj: settings.subjects) {
+		for (String subj : settings.subjects) {
 			subjList.add(subj);
 		}
 		meta.setSubjects(subjList);
