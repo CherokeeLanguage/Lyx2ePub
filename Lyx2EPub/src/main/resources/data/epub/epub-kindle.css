@@ -30,13 +30,8 @@
 }
 
 body {
-	font-family: serif;
 	font-size: 100%;
 	text-align: justify;	
-}
-
-body * {
-	font-family: inherit;
 }
 
 .chrserif {
