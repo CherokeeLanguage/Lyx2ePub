@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
+import javax.xml.namespace.QName;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
@@ -273,6 +274,14 @@ public class Main implements Runnable {
 
 		Metadata meta = epub.getMetadata();
 		setMetadata(target, meta);
+		
+		if (Target.Kindle.equals(target)){
+			meta.getOtherProperties().put(new QName("fixed-layout"), "true");
+			meta.getOtherProperties().put(new QName("orientation-lock"), "portrait");
+			meta.getOtherProperties().put(new QName("original-resolution"), "2650x4100");
+			meta.getOtherProperties().put(new QName("RegionMagnification"), "true");
+			meta.getOtherProperties().put(new QName("book-type"), "comic");
+		}
 
 		Resource cover = getFrontCoverImage();
 		epub.setCoverImage(cover);
