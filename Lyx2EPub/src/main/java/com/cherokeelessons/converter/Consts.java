@@ -21,7 +21,6 @@ public class Consts {
 			+ "	content=\"application/xhtml+xml; charset=UTF-8\" />\n"
 			+ "<title>.</title>\n"
 			+ "<link media=\"all\" rel=\"stylesheet\" type=\"text/css\" href=\"../Styles/stylesheet.css\" />\n"
-			+ "<link media=\"amzn-kf8\" rel=\"stylesheet\" type=\"text/css\" href=\"../Styles/kf8.css\" />\n"
 			+ "</head>" + "\n<body>";
 	public static final String STOCK_FOOTER = "\n</body>" + "\n</html>";
 

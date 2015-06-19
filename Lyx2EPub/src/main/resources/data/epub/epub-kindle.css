@@ -1,4 +1,4 @@
-/* @import url(kf8.css) (not amzn-mobi) */
+@import url(kf8.css) not amzn-mobi;
 
 body {
 	font-size: 100%;
@@ -544,3 +544,4 @@ ol ol ol ol {
 	font-size: inherit;
 	text-indent: 0px;
 }
+

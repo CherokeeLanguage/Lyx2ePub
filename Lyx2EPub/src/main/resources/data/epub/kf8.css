@@ -1,3 +1,7 @@
+.chrserif {
+	font-family: freeserif;
+}
+
 @font-face {
 	font-family: freeserif;
 	src: url("../Fonts/FreeSerif.ttf");
@@ -24,8 +28,4 @@
 	src: url("../Fonts/FreeSerifItalic.ttf");
 	font-weight: normal;
 	font-style: italic;
-}
-
-.chrserif {
-	font-family: freeserif, FreeSerif, Digohweli, FreeSans, FreeMono;
 }
