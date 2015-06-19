@@ -313,6 +313,9 @@ public class Main implements Runnable {
 
 		Resource sheet = getDefaultStylesheet(target);
 		res.add(sheet);
+		
+		Resource freeserif = getFontStylesheet(); 
+		res.add(freeserif);
 
 		Resource coverPage = getCover();
 		spine.addResource(res.add(coverPage));
@@ -606,6 +609,21 @@ public class Main implements Runnable {
 			sheet = new Resource(css, Consts.STYLES + "stylesheet.css");
 			IOUtils.closeQuietly(css);
 			sheet.setTitle("StyleSheet");
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
+		return sheet;
+	}
+	
+	private Resource getFontStylesheet() {
+		Resource sheet = null;
+		try {
+			InputStream css;
+			css = getClass().getResourceAsStream(Consts.FreeSerifSheet);
+			sheet = new Resource(css, Consts.STYLES + "freeserif.css");
+			IOUtils.closeQuietly(css);
+			sheet.setTitle("FreeSerif");
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(-1);

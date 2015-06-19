@@ -36,4 +36,5 @@ public class Consts {
 
 	public static final String StyleSheet = "/data/epub/epub-default.css";
 	public static final String KindleStyleSheet = "/data/epub/epub-kindle.css";
+	public static final String FreeSerifSheet = "/data/epub/freeserif.css";
 }
