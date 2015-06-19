@@ -490,7 +490,7 @@ public class Main implements Runnable {
 
 	private String specials_by_target(String section, Target target) {
 		if (target.equals(Target.Kindle)) {
-			final String q1 = "<div .*?"+Pattern.quote("<!-- smashwords only:begin -->");
+			final String q1 = Pattern.quote("<div class=\"Standard\"><!-- smashwords only:begin -->");
 			final String q2 = Pattern.quote("<!-- smashwords only:end -->");
 			section = section.replaceAll("(?s)"+q1 + ".*?" + q2, "");
 		}
