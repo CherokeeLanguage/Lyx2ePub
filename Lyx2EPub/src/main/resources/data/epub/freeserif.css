@@ -1,28 +1,50 @@
+@charset "UTF-8";
+
+/* FreeSerif */
 @font-face {
-	font-family: "FreeSerif";
-	src: url("../Fonts/FreeSerif.otf");
+	font-family: freeserif;
+	src: url("../Fonts/FreeSerif.ttf");
 	font-weight: normal;
 	font-style: normal;
 }
 
 @font-face {
-	font-family: "FreeSerif";
-	src: url("../Fonts/FreeSerifBold.otf");
+	font-family: freeserif;
+	src: url("../Fonts/FreeSerifBold.ttf");
 	font-weight: bold;
 	font-style: normal;
 }
 
 @font-face {
-	font-family: "FreeSerif";
-	src: url("../Fonts/FreeSerifBoldItalic.otf");
+	font-family: freeserif;
+	src: url("../Fonts/FreeSerifBoldItalic.ttf");
 	font-weight: bold;
 	font-style: italic;
 }
 
 @font-face {
-	font-family: "FreeSerif";
-	src: url("../Fonts/FreeSerifItalic.otf");
+	font-family: freeserif;
+	src: url("../Fonts/FreeSerifItalic.ttf");
 	font-weight: normal;
 	font-style: italic;
 }
 
+.chrserif {
+	font-family: freeserif;
+}
+
+.family_default {
+	font-family: freeserif;
+}
+
+.Title {
+	font-family: freeserif;
+}
+
+.Author {
+	font-family: freeserif;
+}
+
+td {
+	font-family: freeserif;
+}

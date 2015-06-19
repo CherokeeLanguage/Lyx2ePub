@@ -1,41 +1,12 @@
 @charset "UTF-8";
 
-/* FreeSerif */
-@font-face {
-	font-family: freeserif;
-	src: url("../Fonts/FreeSerif.ttf");
-	font-weight: normal;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: freeserif;
-	src: url("../Fonts/FreeSerifBold.ttf");
-	font-weight: bold;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: freeserif;
-	src: url("../Fonts/FreeSerifBoldItalic.ttf");
-	font-weight: bold;
-	font-style: italic;
-}
-
-@font-face {
-	font-family: freeserif;
-	src: url("../Fonts/FreeSerifItalic.ttf");
-	font-weight: normal;
-	font-style: italic;
+@media not amzn-mobi {
+	@import url("freeserif.css")	
 }
 
 body {
 	font-size: 100%;
-	text-align: justify;	
-}
-
-.chrserif {
-	font-family: freeserif;
+	text-align: justify;
 }
 
 .rightblock {
@@ -142,8 +113,8 @@ body {
 
 .ul_dl .ul_dl {
 	border-left: none;
-/* 	border-left-style: dashed; */
-/* 	border-left-width: thin; */
+	/* 	border-left-style: dashed; */
+	/* 	border-left-width: thin; */
 }
 
 .ul_dl {
@@ -169,10 +140,6 @@ body {
 
 .shape_default {
 	font-variant: normal;
-}
-
-.family_default {
-	font-family: freeserif;
 }
 
 .nested {
@@ -270,7 +237,6 @@ ul {
 }
 
 .Title {
-	font-family: freeserif;
 	font-size: 158%;
 	font-style: normal;
 	font-variant: normal;
@@ -283,7 +249,6 @@ ul {
 }
 
 .Author {
-	font-family: freeserif;
 	font-size: 117%;
 	font-style: normal;
 	font-variant: normal;
@@ -341,7 +306,7 @@ ul {
 	font-weight: bold;
 	text-indent: 0px;
 	text-decoration: underline;
-	margin-right: .5em;	
+	margin-right: .5em;
 }
 
 .Subparagraph {
@@ -401,7 +366,7 @@ ul {
 	font-weight: bold;
 	text-indent: 0px;
 	text-decoration: underline;
-	margin-right: .5em;	
+	margin-right: .5em;
 }
 
 .Subparagraph_ {
@@ -446,24 +411,22 @@ ul {
 }
 
 td {
-	font-family: freeserif;
 	font-size: .9em;
 	background-color: white;
 }
 
 tr {
-
+	
 }
 
-
 table {
-/* 	max-width: 100%; */
+	/* 	max-width: 100%; */
 	margin-top: 2em;
 	margin-bottom: 2em;
 	margin-left: auto;
 	margin-right: auto;
 	table-layout: auto;
-	background-color: lightgray;		
+	background-color: lightgray;
 }
 
 .box {
@@ -548,7 +511,7 @@ div.Labeling div {
 	margin-left: 2em;
 }
 
-div.Standard + div.Standard {
+div.Standard+div.Standard {
 	text-indent: .75em;
 }
 
@@ -569,7 +532,7 @@ ol ol {
 }
 
 ol ol ol {
-	list-style: lower-roman;	
+	list-style: lower-roman;
 }
 
 ol ol ol ol {
