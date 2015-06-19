@@ -292,9 +292,9 @@ public class Main implements Runnable {
 		// res.add(getFont("FreeSerifItalic.otf"));
 
 		res.add(getFont("FreeSerif.ttf"));
-//		res.add(getFont("FreeSerifBold.ttf"));
-//		res.add(getFont("FreeSerifBoldItalic.ttf"));
-//		res.add(getFont("FreeSerifItalic.ttf"));
+		res.add(getFont("FreeSerifBold.ttf"));
+		res.add(getFont("FreeSerifBoldItalic.ttf"));
+		res.add(getFont("FreeSerifItalic.ttf"));
 
 		// res.add(getFont("chr.ttf"));
 		// res.add(getFont("chrb.ttf"));
