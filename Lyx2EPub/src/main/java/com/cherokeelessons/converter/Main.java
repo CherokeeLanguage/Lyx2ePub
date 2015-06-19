@@ -286,20 +286,10 @@ public class Main implements Runnable {
 		Resource cover = getFrontCoverImage();
 		epub.setCoverImage(cover);
 
-		// res.add(getFont("FreeSerif.otf"));
-		// res.add(getFont("FreeSerifBold.otf"));
-		// res.add(getFont("FreeSerifBoldItalic.otf"));
-		// res.add(getFont("FreeSerifItalic.otf"));
-
 		res.add(getFont("FreeSerif.ttf"));
 		res.add(getFont("FreeSerifBold.ttf"));
 		res.add(getFont("FreeSerifBoldItalic.ttf"));
 		res.add(getFont("FreeSerifItalic.ttf"));
-
-		// res.add(getFont("chr.ttf"));
-		// res.add(getFont("chrb.ttf"));
-		// res.add(getFont("chrbi.ttf"));
-		// res.add(getFont("chri.ttf"));
 
 		// res.add(getFont("FreeSans.ttf"));
 		// res.add(getFont("FreeSansBold.ttf"));
