@@ -304,6 +304,11 @@ public class Main implements Runnable {
 		Resource sheet = getDefaultStylesheet(target);
 		res.add(sheet);
 		
+		if (Target.Kindle.equals(target)){
+			Resource kf8 = getKF8Stylesheet();
+			res.add(kf8);
+		}
+		
 //		Resource freeserif = getFontStylesheet(); 
 //		res.add(freeserif);
 
@@ -485,7 +490,7 @@ public class Main implements Runnable {
 
 	private String specials_by_target(String section, Target target) {
 		if (target.equals(Target.Kindle)) {
-			final String q1 = Pattern.quote("<!-- smashwords only:begin -->");
+			final String q1 = "<div .*?"+Pattern.quote("<!-- smashwords only:begin -->");
 			final String q2 = Pattern.quote("<!-- smashwords only:end -->");
 			section = section.replaceAll("(?s)"+q1 + ".*?" + q2, "");
 		}
@@ -606,14 +611,14 @@ public class Main implements Runnable {
 		return sheet;
 	}
 	
-	private Resource getFontStylesheet() {
+	private Resource getKF8Stylesheet() {
 		Resource sheet = null;
 		try {
 			InputStream css;
-			css = getClass().getResourceAsStream(Consts.FreeSerifSheet);
-			sheet = new Resource(css, Consts.STYLES + "freeserif.css");
+			css = getClass().getResourceAsStream(Consts.KF8);
+			sheet = new Resource(css, Consts.STYLES + "kf8.css");
 			IOUtils.closeQuietly(css);
-			sheet.setTitle("FreeSerif");
+			sheet.setTitle("KF8");
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(-1);
@@ -949,7 +954,7 @@ public class Main implements Runnable {
 				break whichparsing;
 			}
 			if (line.startsWith("\\begin_inset Branch smashwords")) {
-				discardUntil("", iline, new StateObject());
+				discardUntil("", iline, state);
 				tmp.append("<!-- smashwords only:begin -->");
 				tmp.append(parseUntil("\\end_inset", iline, state));
 				tmp.append("<!-- smashwords only:end -->");
