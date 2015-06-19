@@ -487,7 +487,7 @@ public class Main implements Runnable {
 		if (target.equals(Target.Kindle)) {
 			final String q1 = Pattern.quote("<!-- smashwords only:begin -->");
 			final String q2 = Pattern.quote("<!-- smashwords only:end -->");
-			section = section.replaceAll(q1 + ".*?" + q2, "");
+			section = section.replaceAll("(?s)"+q1 + ".*?" + q2, "");
 		}
 		return section;
 	}
@@ -546,7 +546,7 @@ public class Main implements Runnable {
 		String span1 = "<span class=\"chrserif\">";
 		// String span1 = "<span style=\"font-family: freeserif;\">";
 		String span2 = "</span>";
-		section = section.replaceAll(regex, span1 + "$1" + span2);
+		section = section.replaceAll("(?s)"+regex, span1 + "$1" + span2);
 
 		return section;
 	}
