@@ -415,13 +415,7 @@ td {
 	background-color: white;
 }
 
-tr {
-
-}
-
-
 table {
-/* 	max-width: 100%; */
 	margin-top: 2em;
 	margin-bottom: 2em;
 	margin-left: auto;
@@ -597,10 +591,6 @@ ol ol ol ol {
 }
 
 .Author {
-	font-family: freeserif;
-}
-
-td {
 	font-family: freeserif;
 }
 
