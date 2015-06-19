@@ -276,11 +276,11 @@ public class Main implements Runnable {
 		setMetadata(target, meta);
 		
 		if (Target.Kindle.equals(target)){
-			meta.getOtherProperties().put(new QName("fixed-layout"), "true");
-			meta.getOtherProperties().put(new QName("orientation-lock"), "portrait");
-			meta.getOtherProperties().put(new QName("original-resolution"), "2650x4100");
+//			meta.getOtherProperties().put(new QName("fixed-layout"), "true");
+//			meta.getOtherProperties().put(new QName("orientation-lock"), "portrait");
+//			meta.getOtherProperties().put(new QName("original-resolution"), "2650x4100");
 			meta.getOtherProperties().put(new QName("RegionMagnification"), "true");
-			meta.getOtherProperties().put(new QName("book-type"), "comic");
+//			meta.getOtherProperties().put(new QName("book-type"), "comic");
 		}
 
 		Resource cover = getFrontCoverImage();
