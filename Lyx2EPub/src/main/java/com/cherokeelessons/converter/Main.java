@@ -292,9 +292,9 @@ public class Main implements Runnable {
 		// res.add(getFont("FreeSerifItalic.otf"));
 
 		res.add(getFont("FreeSerif.ttf"));
-		res.add(getFont("FreeSerifBold.ttf"));
-		res.add(getFont("FreeSerifBoldItalic.ttf"));
-		res.add(getFont("FreeSerifItalic.ttf"));
+//		res.add(getFont("FreeSerifBold.ttf"));
+//		res.add(getFont("FreeSerifBoldItalic.ttf"));
+//		res.add(getFont("FreeSerifItalic.ttf"));
 
 		// res.add(getFont("chr.ttf"));
 		// res.add(getFont("chrb.ttf"));
@@ -314,8 +314,8 @@ public class Main implements Runnable {
 		Resource sheet = getDefaultStylesheet(target);
 		res.add(sheet);
 		
-		Resource freeserif = getFontStylesheet(); 
-		res.add(freeserif);
+//		Resource freeserif = getFontStylesheet(); 
+//		res.add(freeserif);
 
 		Resource coverPage = getCover();
 		spine.addResource(res.add(coverPage));
