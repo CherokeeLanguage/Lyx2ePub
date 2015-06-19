@@ -1,31 +1,3 @@
 .chrserif {
 	font-family: freeserif;
 }
-
-@font-face {
-	font-family: freeserif;
-	src: url("../Fonts/FreeSerif.ttf");
-	font-weight: normal;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: freeserif;
-	src: url("../Fonts/FreeSerifBold.ttf");
-	font-weight: bold;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: freeserif;
-	src: url("../Fonts/FreeSerifBoldItalic.ttf");
-	font-weight: bold;
-	font-style: italic;
-}
-
-@font-face {
-	font-family: freeserif;
-	src: url("../Fonts/FreeSerifItalic.ttf");
-	font-weight: normal;
-	font-style: italic;
-}
