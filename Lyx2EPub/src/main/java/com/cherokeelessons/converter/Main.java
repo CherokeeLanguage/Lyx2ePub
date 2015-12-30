@@ -364,7 +364,7 @@ public class Main implements Runnable {
 			String[] labels = StringUtils.substringsBetween(section,
 					"<a class=\"CommandInsetLabel\" id=\"", "\"></a>");
 			for (String label : labels) {
-				crossref_map.put("#_" + label, url);
+				crossref_map.put("#" + label, url);
 			}
 		}
 		// find and fixup all cross-references to labels
@@ -381,13 +381,12 @@ public class Main implements Runnable {
 				if (!ref.startsWith("#")) {
 					continue;
 				}
-				String _ref="#_"+StringUtils.substring(ref, 1);
-				String onPage = crossref_map.get(_ref);
+				String onPage = crossref_map.get(ref);
 				if (StringUtils.isEmpty(onPage)) {
-					System.err.println("\tBAD CROSS REFERENCE: " + _ref);
+					System.err.println("\tBAD CROSS REFERENCE: " + ref);
 					continue;
 				}
-				String newRef = onPage + _ref;
+				String newRef = onPage + ref;
 				section = section.replace(open + ref + close, open + newRef
 						+ close);
 			}
@@ -1121,6 +1120,9 @@ public class Main implements Runnable {
 				break whichparsing;
 			}
 			if (line.startsWith("\\begin_inset Box Frameless")){
+				while (!iline.next().startsWith("status ")){
+					continue;
+				}
 				tmp.append("\n<div><!-- Box Frameless:begin -->\n");
 				int g = state.size();
 				state.pushGrouping("\n</div><!-- Box Frameless:end -->\n");
@@ -1433,6 +1435,12 @@ public class Main implements Runnable {
 				break parseert;
 			}
 			if (inset.startsWith("%")) {
+				break parseert;
+			}
+			if (inset.startsWith("\\phantomsection")){
+				break parseert;
+			}
+			if (inset.startsWith("\\setlength")) {
 				break parseert;
 			}
 			if (inset.startsWith("\\frontmatter")) {

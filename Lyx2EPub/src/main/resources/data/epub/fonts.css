@@ -1,0 +1,41 @@
+/* FreeSerif */
+
+html {
+	font-family: freeserif;
+}
+
+body {
+	font-family: freeserif;
+}
+
+body * {
+	font-family: freeserif;
+}
+
+@font-face {
+	font-family: freeserif;
+	src: url("/pluginfile.php/228/mod_resource/content/6/FreeSerif.woff"), url("/pluginfile.php/228/mod_resource/content/6/FreeSerif.ttf");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: freeserif;
+	src: url("/pluginfile.php/228/mod_resource/content/6/FreeSerifBold.woff"), url("/pluginfile.php/228/mod_resource/content/6/FreeSerifBold.ttf");
+	font-weight: bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: freeserif;
+	src: url("/pluginfile.php/228/mod_resource/content/6/FreeSerifBoldItalic.woff"), url("/pluginfile.php/228/mod_resource/content/6/FreeSerifBoldItalic.ttf");
+	font-weight: bold;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: freeserif;
+	src: url("/pluginfile.php/228/mod_resource/content/6/FreeSerifItalic.woff"), url("/pluginfile.php/228/mod_resource/content/6/FreeSerifItalic.ttf");
+	font-weight: normal;
+	font-style: italic;
+}

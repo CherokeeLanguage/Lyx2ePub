@@ -154,6 +154,10 @@ body * {
 	text-align: right;
 }
 
+.align_left {
+	text-align: left;
+}
+
 .noindent {
 	text-indent: 0px;
 }
