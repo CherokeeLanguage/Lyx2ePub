@@ -364,7 +364,7 @@ public class Main implements Runnable {
 			String[] labels = StringUtils.substringsBetween(section,
 					"<a class=\"CommandInsetLabel\" id=\"", "\"></a>");
 			for (String label : labels) {
-				crossref_map.put("#" + label, url);
+				crossref_map.put("#_" + label, url);
 			}
 		}
 		// find and fixup all cross-references to labels
@@ -381,12 +381,13 @@ public class Main implements Runnable {
 				if (!ref.startsWith("#")) {
 					continue;
 				}
-				String onPage = crossref_map.get(ref);
+				String _ref="#_"+StringUtils.substring(ref, 1);
+				String onPage = crossref_map.get(_ref);
 				if (StringUtils.isEmpty(onPage)) {
-					System.err.println("\tBAD CROSS REFERENCE: " + ref);
+					System.err.println("\tBAD CROSS REFERENCE: " + _ref);
 					continue;
 				}
-				String newRef = onPage + ref;
+				String newRef = onPage + _ref;
 				section = section.replace(open + ref + close, open + newRef
 						+ close);
 			}
@@ -1004,6 +1005,11 @@ public class Main implements Runnable {
 				state.pushGrouping("</div>");
 				break whichparsing;
 			}
+			if (line.equals("\\align left")){
+				state.pushGrouping("</div>");
+				tmp.append("<div class=\"align_left\">");
+				break whichparsing;
+			}
 			if (line.equals("\\align center")) {
 				state.pushGrouping("</div>");
 				tmp.append("<div class=\"align_center\">");
@@ -1112,6 +1118,16 @@ public class Main implements Runnable {
 				String cls = StringUtils
 						.substringAfter(line, "\\begin_layout ");
 				tmp.append(begin_layout(cls, iline, state));
+				break whichparsing;
+			}
+			if (line.startsWith("\\begin_inset Box Frameless")){
+				tmp.append("\n<div><!-- Box Frameless:begin -->\n");
+				int g = state.size();
+				state.pushGrouping("\n</div><!-- Box Frameless:end -->\n");
+				tmp.append(parseUntil("\\end_inset", iline, state));
+				while (state.size() > g) {
+					tmp.append(state.popGrouping());
+				}
 				break whichparsing;
 			}
 			if (line.equals("\\begin_inset space ~")) {
