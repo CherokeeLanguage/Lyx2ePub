@@ -460,7 +460,7 @@ public class Main implements Runnable {
 					}
 					latin.append(syl2lat.get(letter + ""));
 				}
-				String chapter_display_title = latin + "|" + title;
+				String chapter_display_title = !latin.equals(title)?latin + "|" + title:title;
 				activeChapter = epub.addSection(chapter_display_title, sectionpage);
 				toc.append("<li class=\"toc\">");
 				toc.append("<a href=\"");
@@ -493,7 +493,7 @@ public class Main implements Runnable {
 					}
 					latin.append(syl2lat.get(letter + ""));
 				}
-				String section_display_title = latin + "|" + title;
+				String section_display_title = !latin.equals(title)?latin + "|" + title:title;
 				epub.addSection(activeChapter, section_display_title, sectionpage);
 			} else {
 				sectionpage.setTitle("section "+counter);
