@@ -1,10 +1,12 @@
 @import url(kf8.css) not amzn-mobi;
 
+/* FreeSerif */
 @font-face {
 	font-family: freeserif;
 	src: url("../Fonts/FreeSerif.ttf");
 	font-weight: normal;
 	font-style: normal;
+	font-variant: normal;
 }
 
 @font-face {
@@ -12,6 +14,7 @@
 	src: url("../Fonts/FreeSerifBold.ttf");
 	font-weight: bold;
 	font-style: normal;
+	font-variant: normal;
 }
 
 @font-face {
@@ -19,6 +22,7 @@
 	src: url("../Fonts/FreeSerifBoldItalic.ttf");
 	font-weight: bold;
 	font-style: italic;
+	font-variant: normal;
 }
 
 @font-face {
@@ -26,6 +30,40 @@
 	src: url("../Fonts/FreeSerifItalic.ttf");
 	font-weight: normal;
 	font-style: italic;
+	font-variant: normal;
+}
+
+//small-caps
+@font-face {
+	font-family: freeserif;
+	src: url("../Fonts/FreeSerif.ttf");
+	font-weight: normal;
+	font-style: normal;
+	font-variant: small-caps;
+}
+
+@font-face {
+	font-family: freeserif;
+	src: url("../Fonts/FreeSerifBold.ttf");
+	font-weight: bold;
+	font-style: normal;
+	font-variant: small-caps;
+}
+
+@font-face {
+	font-family: freeserif;
+	src: url("../Fonts/FreeSerifBoldItalic.ttf");
+	font-weight: bold;
+	font-style: italic;
+	font-variant: small-caps;
+}
+
+@font-face {
+	font-family: freeserif;
+	src: url("../Fonts/FreeSerifItalic.ttf");
+	font-weight: normal;
+	font-style: italic;
+	font-variant: small-caps;
 }
 
 body {
@@ -441,16 +479,28 @@ ul {
 td {
 	font-size: .9em;
 	background-color: white;
+	border: none;
+	padding: 0px;
+	margin: 0px;
+	padding-left: .1em;
+}
+
+tr {
+	background-color: white;
+	border: none;
+	margin: 0px;
+	padding: 0px;
 }
 
 table {
-	/* 	max-width: 100%; */
+	padding: 0px;
 	margin-top: 2em;
 	margin-bottom: 2em;
 	margin-left: auto;
 	margin-right: auto;
 	table-layout: auto;
-	background-color: lightgray;
+	background-color: white;
+	border: none;		
 }
 
 .box {

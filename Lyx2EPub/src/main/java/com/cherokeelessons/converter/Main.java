@@ -29,6 +29,7 @@ import nl.siegmann.epublib.domain.MediaType;
 import nl.siegmann.epublib.domain.Metadata;
 import nl.siegmann.epublib.domain.Resources;
 import nl.siegmann.epublib.domain.Spine;
+import nl.siegmann.epublib.domain.TOCReference;
 import nl.siegmann.epublib.epub.EpubWriter;
 
 import org.apache.commons.io.FileUtils;
@@ -393,6 +394,7 @@ public class Main implements Runnable {
 			lsections.set(section);
 		}
 
+		TOCReference activeChapter=null;
 		counter = 0;
 		lsections = sections.listIterator();
 		while (lsections.hasNext()) {
@@ -458,7 +460,8 @@ public class Main implements Runnable {
 					}
 					latin.append(syl2lat.get(letter + ""));
 				}
-				epub.addSection(latin + "|" + title, sectionpage);
+				String chapter_display_title = latin + "|" + title;
+				activeChapter = epub.addSection(chapter_display_title, sectionpage);
 				toc.append("<li class=\"toc\">");
 				toc.append("<a href=\"");
 				toc.append(url);
@@ -474,12 +477,28 @@ public class Main implements Runnable {
 				continue;
 			}
 			String url = String.format("x_%03d_section.xhtml", counter);
+			String title = StringUtils.substringBetween(section,
+					"class=\"Section\">", "<");
 			section = targetedHtmlManipulation(section, target);
 			section = Consts.STOCK_HEADER + section + Consts.STOCK_FOOTER;
 			Resource sectionpage = new Resource(section, Consts.TEXT + url);
-			sectionpage.setTitle("section");
 			res.add(sectionpage);
-			spine.addResource(sectionpage);
+			if (activeChapter!=null && !StringUtils.isBlank(title)) {
+				sectionpage.setTitle(title);
+				StringBuilder latin = new StringBuilder();
+				for (char letter : title.toCharArray()) {
+					if (letter < 'Ꭰ' || letter > 'Ᏼ') {
+						latin.append(letter);
+						continue;
+					}
+					latin.append(syl2lat.get(letter + ""));
+				}
+				String section_display_title = latin + "|" + title;
+				epub.addSection(activeChapter, section_display_title, sectionpage);
+			} else {
+				sectionpage.setTitle("section "+counter);
+				spine.addResource(sectionpage);
+			}
 		}
 		toc.append("</ul>");
 		tocPage.setData(asBytes(Consts.STOCK_HEADER
@@ -1502,16 +1521,16 @@ public class Main implements Runnable {
 			}
 		}
 		if (line.contains("topline=\"true\"")) {
-			style.append("border-top-style: solid; border-top-width: medium;");
+			style.append("border-top: medium solid black;");
 		}
 		if (line.contains("bottomline=\"true\"")) {
-			style.append("border-bottom-style: solid; border-bottom-width: medium;");
+			style.append("border-bottom: medium solid black;");
 		}
 		if (line.contains("leftline=\"true\"")) {
-			style.append("border-left-style: solid; border-left-width: medium;");
+			style.append("border-left: medium solid black;");
 		}
 		if (line.contains("rightline=\"true\"")) {
-			style.append("border-right-style: solid; border-right-width: medium;");
+			style.append("border-right: medium solid black;");
 		}
 
 		final StateObject cell_state = new StateObject();

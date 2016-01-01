@@ -2,7 +2,8 @@
 
 body {
 	font-size: 100%;
-	text-align: justify;	
+	text-align: justify;
+	font-family: freeserif;	
 }
 
 body * {
@@ -417,15 +418,29 @@ ul {
 td {
 	font-size: .9em;
 	background-color: white;
+	border: none;
+	padding: 0px;
+	margin: 0px;
+	padding-left: .3em;
+	padding-right: .3em;
+}
+
+tr {
+	background-color: white;
+	border: none;
+	margin: 0px;
+	padding: 0px;
 }
 
 table {
+	padding: 0px;
 	margin-top: 2em;
 	margin-bottom: 2em;
 	margin-left: auto;
 	margin-right: auto;
 	table-layout: auto;
-	background-color: lightgray;		
+	background-color: white;
+	border: none;		
 }
 
 .box {
@@ -559,6 +574,7 @@ ol ol ol ol {
 	src: url("../Fonts/FreeSerif.ttf");
 	font-weight: normal;
 	font-style: normal;
+	font-variant: normal;
 }
 
 @font-face {
@@ -566,6 +582,7 @@ ol ol ol ol {
 	src: url("../Fonts/FreeSerifBold.ttf");
 	font-weight: bold;
 	font-style: normal;
+	font-variant: normal;
 }
 
 @font-face {
@@ -573,6 +590,7 @@ ol ol ol ol {
 	src: url("../Fonts/FreeSerifBoldItalic.ttf");
 	font-weight: bold;
 	font-style: italic;
+	font-variant: normal;
 }
 
 @font-face {
@@ -580,6 +598,40 @@ ol ol ol ol {
 	src: url("../Fonts/FreeSerifItalic.ttf");
 	font-weight: normal;
 	font-style: italic;
+	font-variant: normal;
+}
+
+//small-caps
+@font-face {
+	font-family: freeserif;
+	src: url("../Fonts/FreeSerif.ttf");
+	font-weight: normal;
+	font-style: normal;
+	font-variant: small-caps;
+}
+
+@font-face {
+	font-family: freeserif;
+	src: url("../Fonts/FreeSerifBold.ttf");
+	font-weight: bold;
+	font-style: normal;
+	font-variant: small-caps;
+}
+
+@font-face {
+	font-family: freeserif;
+	src: url("../Fonts/FreeSerifBoldItalic.ttf");
+	font-weight: bold;
+	font-style: italic;
+	font-variant: small-caps;
+}
+
+@font-face {
+	font-family: freeserif;
+	src: url("../Fonts/FreeSerifItalic.ttf");
+	font-weight: normal;
+	font-style: italic;
+	font-variant: small-caps;
 }
 
 .chrserif {
