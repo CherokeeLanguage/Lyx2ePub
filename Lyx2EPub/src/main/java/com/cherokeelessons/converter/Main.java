@@ -321,6 +321,7 @@ public class Main implements Runnable {
 		Resource copyPage = new Resource("", Consts.TEXT + "copyright.xhtml");
 		Resource tocPage = new Resource("", Consts.TEXT + "toc.xhtml");
 		StringBuilder toc = new StringBuilder();
+		StringBuilder toc_section = new StringBuilder();
 
 		toc.append("<ul>");
 
@@ -469,6 +470,20 @@ public class Main implements Runnable {
 				System.out.println("\tAdding Chapter: '"+title+"'");
 				sectionpage.setTitle(title);
 				activeChapter = epub.addSection(title, sectionpage);
+				
+				/*
+				 * tocsection for previous chapter
+				 */
+				if (toc_section.length()!=0) {
+					toc.append("<li style=\"list-style: none;\"><ul>");
+					toc.append(toc_section);
+					toc.append("</ul></li>");
+					toc_section.setLength(0);
+				}
+				
+				/*
+				 * start of new toc for current chapter
+				 */
 				toc.append("<li class=\"toc\">");
 				toc.append("<a href=\"");
 				toc.append(url);
@@ -507,6 +522,15 @@ public class Main implements Runnable {
 					}
 					title=latin+"|"+title;
 				}
+				
+				toc_section.append("<li class=\"toc\">");
+				toc_section.append("<a href=\"");
+				toc_section.append(url);
+				toc_section.append("\">");
+				toc_section.append(title);
+				toc_section.append("</a>");
+				toc_section.append("</li>");
+				
 				System.out.println("\tAdding Section: '"+title+"'");
 				sectionpage.setTitle(title);
 				epub.addSection(activeChapter, title, sectionpage);
@@ -516,7 +540,18 @@ public class Main implements Runnable {
 				spine.addResource(sectionpage);
 			}
 		}
+		
+		/*
+		 * tocsection for last chapter
+		 */
+		if (toc_section.length()!=0) {
+			toc.append("<li style=\"list-style: none;\"><ul>");
+			toc.append(toc_section);
+			toc.append("</ul></li>");
+			toc_section.setLength(0);
+		}
 		toc.append("</ul>");
+		
 		tocPage.setData(asBytes(Consts.STOCK_HEADER
 				+ targetedHtmlManipulation(toc.toString(), target)
 				+ Consts.STOCK_FOOTER));
