@@ -448,20 +448,27 @@ public class Main implements Runnable {
 				String url = String.format("x_%03d_chapter.xhtml", counter);
 				String title = StringUtils.substringBetween(section,
 						"class=\"Chapter\">", "<");
+				while (title.startsWith("<")){
+					title = StringUtils.substringAfter(title,">");
+				}
+				title = StringUtils.substringBefore(title, "<");
 				section = targetedHtmlManipulation(section, target);
 				section = Consts.STOCK_HEADER + section + Consts.STOCK_FOOTER;
 				Resource sectionpage = new Resource(section, Consts.TEXT + url);
-				sectionpage.setTitle(title);
-				StringBuilder latin = new StringBuilder();
-				for (char letter : title.toCharArray()) {
-					if (letter < 'Ꭰ' || letter > 'Ᏼ') {
-						latin.append(letter);
-						continue;
+				if (title.matches(".*?[Ꭰ-Ᏼ].*?")){
+					StringBuilder latin = new StringBuilder();
+					for (char letter : title.toCharArray()) {
+						if (letter < 'Ꭰ' || letter > 'Ᏼ') {
+							latin.append(letter);
+							continue;
+						}
+						latin.append(syl2lat.get(letter + ""));
 					}
-					latin.append(syl2lat.get(letter + ""));
+					title=latin+"|"+title;
 				}
-				String chapter_display_title = !latin.equals(title)?latin + "|" + title:title;
-				activeChapter = epub.addSection(chapter_display_title, sectionpage);
+				System.out.println("\tAdding Chapter: '"+title+"'");
+				sectionpage.setTitle(title);
+				activeChapter = epub.addSection(title, sectionpage);
 				toc.append("<li class=\"toc\">");
 				toc.append("<a href=\"");
 				toc.append(url);
@@ -477,25 +484,34 @@ public class Main implements Runnable {
 				continue;
 			}
 			String url = String.format("x_%03d_section.xhtml", counter);
-			String title = StringUtils.substringBetween(section,
-					"class=\"Section\">", "<");
+			
+			String title = StringUtils.substringAfter(section,"class=\"Section\">");
+			while (title.startsWith("<")){
+				title = StringUtils.substringAfter(title,">");
+			}
+			title = StringUtils.substringBefore(title, "<");
+			
 			section = targetedHtmlManipulation(section, target);
 			section = Consts.STOCK_HEADER + section + Consts.STOCK_FOOTER;
 			Resource sectionpage = new Resource(section, Consts.TEXT + url);
 			res.add(sectionpage);
 			if (activeChapter!=null && !StringUtils.isBlank(title)) {
-				sectionpage.setTitle(title);
-				StringBuilder latin = new StringBuilder();
-				for (char letter : title.toCharArray()) {
-					if (letter < 'Ꭰ' || letter > 'Ᏼ') {
-						latin.append(letter);
-						continue;
+				if (title.matches(".*?[Ꭰ-Ᏼ].*?")){
+					StringBuilder latin = new StringBuilder();
+					for (char letter : title.toCharArray()) {
+						if (letter < 'Ꭰ' || letter > 'Ᏼ') {
+							latin.append(letter);
+							continue;
+						}
+						latin.append(syl2lat.get(letter + ""));
 					}
-					latin.append(syl2lat.get(letter + ""));
+					title=latin+"|"+title;
 				}
-				String section_display_title = !latin.equals(title)?latin + "|" + title:title;
-				epub.addSection(activeChapter, section_display_title, sectionpage);
+				System.out.println("\tAdding Section: '"+title+"'");
+				sectionpage.setTitle(title);
+				epub.addSection(activeChapter, title, sectionpage);
 			} else {
+				System.out.println("\tAdding Unlabeled Section: '"+title+"'");
 				sectionpage.setTitle("section "+counter);
 				spine.addResource(sectionpage);
 			}
