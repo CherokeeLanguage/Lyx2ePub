@@ -477,7 +477,6 @@ ul {
 
 td {
 	font-size: .9em;
-	background-color: white;
 	border: none;
 	padding: 0px;
 	margin: 0px;
@@ -485,7 +484,6 @@ td {
 }
 
 tr {
-	background-color: white;
 	border: none;
 	margin: 0px;
 	padding: 0px;
@@ -498,7 +496,6 @@ table {
 	margin-left: auto;
 	margin-right: auto;
 	table-layout: auto;
-	background-color: white;
 	border: none;		
 }
 
