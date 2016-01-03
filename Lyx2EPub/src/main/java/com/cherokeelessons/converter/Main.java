@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
@@ -17,20 +19,6 @@ import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.xml.namespace.QName;
-
-import net.lingala.zip4j.core.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
-import net.lingala.zip4j.model.ZipParameters;
-import nl.siegmann.epublib.domain.Author;
-import nl.siegmann.epublib.domain.Book;
-import nl.siegmann.epublib.domain.Date;
-import nl.siegmann.epublib.domain.Identifier;
-import nl.siegmann.epublib.domain.MediaType;
-import nl.siegmann.epublib.domain.Metadata;
-import nl.siegmann.epublib.domain.Resources;
-import nl.siegmann.epublib.domain.Spine;
-import nl.siegmann.epublib.domain.TOCReference;
-import nl.siegmann.epublib.epub.EpubWriter;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -47,6 +35,20 @@ import org.imgscalr.Scalr.Method;
 import org.imgscalr.Scalr.Mode;
 
 import com.cherokeelessons.epub.Resource;
+
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.ZipParameters;
+import nl.siegmann.epublib.domain.Author;
+import nl.siegmann.epublib.domain.Book;
+import nl.siegmann.epublib.domain.Date;
+import nl.siegmann.epublib.domain.Identifier;
+import nl.siegmann.epublib.domain.MediaType;
+import nl.siegmann.epublib.domain.Metadata;
+import nl.siegmann.epublib.domain.Resources;
+import nl.siegmann.epublib.domain.Spine;
+import nl.siegmann.epublib.domain.TOCReference;
+import nl.siegmann.epublib.epub.EpubWriter;
 
 public class Main implements Runnable {
 
@@ -85,6 +87,7 @@ public class Main implements Runnable {
 
 	private static boolean skipimages = false;
 	private static boolean dofontspans = true;
+	private static File settings_file;
 
 	private String minimalEscape(String text) {
 		text = StringEscapeUtils.escapeHtml4(text);
@@ -103,11 +106,22 @@ public class Main implements Runnable {
 	private Settings settings;
 
 	public static void main(String[] args) throws IOException {
-		File settings_file = new File("settings.sample.json");
+		System.out.println("ARGS: "+Arrays.asList(args).toString());
+		settings_file = new File("settings.sample.json");
 		JsonConverter json = new JsonConverter();
 		Settings settingsTemplate = new Settings();
 		json.toJson(settings_file, settingsTemplate);
 		settings_file = new File("settings.json");
+		Iterator<String> iarg = Arrays.asList(args).iterator();
+		while (iarg.hasNext()) {
+			String arg=iarg.next();
+			if (arg.equals("--settings")){
+				settings_file = new File(iarg.next());
+				continue;
+			}
+			throw new RuntimeException("Unknown command line switch: '"+arg+"'");
+		}
+		System.out.println("Settings file: "+settings_file.getName());
 		if (!settings_file.exists()) {
 			json.toJson(settings_file, settingsTemplate);
 		}
@@ -120,7 +134,7 @@ public class Main implements Runnable {
 	@Override
 	public void run() {
 		JsonConverter json = new JsonConverter();
-		settings = json.fromJson(new File("settings.json"), Settings.class);
+		settings = json.fromJson(settings_file, Settings.class);
 		if (StringUtils.isEmpty(settings.destdir)) {
 			settings.destdir = settings.sourcedir;
 		}
@@ -1265,6 +1279,7 @@ public class Main implements Runnable {
 				break whichparsing;
 			}
 			if (line.startsWith("\\begin_inset Graphics")) {
+				System.out.println("\tGraphics: ");
 				boolean current_svg_mode = settings.svg_mode;
 				String src = "";
 				String lyx_width = "";
@@ -1275,12 +1290,14 @@ public class Main implements Runnable {
 					if (param.startsWith("filename ")) {
 						src = StringUtils.substringAfter(param, "filename ");
 						tmp.append("<!-- filename: " + src + " -->");
+						System.out.println("\t\tfilename: "+src);
 						continue;
 					}
 					if (param.startsWith("width ")) {
 						lyx_width = StringUtils.substringAfter(param, "width ");
 						tmp.append("<!-- width: " + lyx_width + " -->");
 						lyx_width = lyx_width.replace("col%", "%");
+						System.out.println("\t\twidth: "+lyx_width);
 						continue;
 					}
 					if (param.startsWith("height ")) {
@@ -1288,6 +1305,7 @@ public class Main implements Runnable {
 								"height ");
 						tmp.append("<!-- height: " + lyx_height + " -->");
 						lyx_height = lyx_height.replace("pheight%", "%");
+						System.out.println("\t\theight: "+lyx_height);
 						continue;
 					}
 					if (param.startsWith("groupId")) {
@@ -1296,6 +1314,7 @@ public class Main implements Runnable {
 						lyx_groupId = lyx_groupId.replaceAll("[^a-zA-Z0-9]",
 								"_");
 						tmp.append("<!-- groupId: " + lyx_groupId + " -->");
+						System.out.println("\t\tgroup: "+lyx_groupId);
 					}
 
 					if (param.equals("\\end_inset")) {
@@ -1359,7 +1378,7 @@ public class Main implements Runnable {
 						File local_img = new File(settings.image_tmp, simg);
 						img_counter++;
 						if (!img.canRead()) {
-							break;
+							throw new RuntimeException("Can't read image at: "+img.getAbsolutePath());
 						}
 						if (skipimages) {
 							break;
@@ -1505,6 +1524,9 @@ public class Main implements Runnable {
 				break parseert;
 			}
 			if (inset.startsWith("%")) {
+				break parseert;
+			}
+			if (inset.startsWith("\\renewcommand*\\contentsname")){
 				break parseert;
 			}
 			if (inset.startsWith("\\phantomsection")){
