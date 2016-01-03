@@ -1371,7 +1371,12 @@ public class Main implements Runnable {
 							template += "<!-- epub:clear page -->";
 						}
 
-						File img = new File(settings.sourcedir, src);
+						File img;
+						if (src.startsWith("/")){
+							img = new File(src);
+						} else {
+							img = new File(settings.sourcedir, src);
+						}
 						String iext = FilenameUtils.getExtension(img.getName());
 						String simg = String.format("%03d.%s", img_counter,
 								iext);
