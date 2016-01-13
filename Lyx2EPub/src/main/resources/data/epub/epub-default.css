@@ -7,7 +7,15 @@ body {
 }
 
 body * {
-	font-family: inherit;
+	font-family: freeserif;
+}
+
+body * * {
+	font-family: freeserif;
+}
+
+body * * * {
+	font-family: freeserif;
 }
 
 .rightblock {

@@ -9,3 +9,11 @@ body {
 body * {
 	font-family: freeserif;
 }
+
+body * * {
+	font-family: freeserif;
+}
+
+body * * * {
+	font-family: freeserif;
+}

@@ -180,17 +180,29 @@ public class Main implements Runnable {
 		StringBuilder buffer = new StringBuilder();
 		while (rlines.hasNext()) {
 			String fragment = rlines.next();
+			fragment=StringUtils.strip(fragment, "\n");
+			fragment=fragment.replaceAll("<div class=\"[a-zA-Z]+\"></div>(<!-- [a-zA-Z]+ -->)?", "");
+			//skip empty divs
+//			if (fragment.matches("<div class=\"[a-zA-Z]+\"></div>(<!-- [a-zA-Z]+ -->)?")){
+//				continue;
+//			}
+//			if (fragment.equalsIgnoreCase("<div class=\"Standard\"></div><!-- Standard -->")){
+//				continue;
+//			}
+//			if (fragment.matches(".*?<div class=\"[a-zA-Z]+\"></div>.*?")){
+//				System.out.println("empty div: "+fragment);
+//				fragment=fragment.replaceAll("<div class=\"[a-zA-Z]+\"></div>(<!-- [a-zA-Z]+ -->)?", "");
+//			}
 			newpagecheck: {
 				if (fragment.contains("<!-- epub:clear page -->")) {
-					String before = StringUtils
-							.substringBefore(fragment,
-									"<div class=\"Standard\"><!-- epub:clear page --></div>");
+					System.out.println("epub:clear page");
+					String clearPage = "<!-- epub:clear page -->";
+					//String clearPage = "<div class=\"Standard\"><!-- epub:clear page --></div>";
+					String before = StringUtils.substringBefore(fragment, clearPage);
 					buffer.append(before);
 					sections.add(buffer.toString());
 					buffer.setLength(0);
-					fragment = StringUtils
-							.substringAfter(fragment,
-									"<div class=\"Standard\"><!-- epub:clear page --></div>");
+					fragment = StringUtils.substringAfter(fragment, clearPage);
 				}
 				if (buffer.length() == 0) {
 					break newpagecheck;
@@ -1305,6 +1317,7 @@ public class Main implements Runnable {
 								"height ");
 						tmp.append("<!-- height: " + lyx_height + " -->");
 						lyx_height = lyx_height.replace("pheight%", "%");
+						lyx_height = lyx_height.replace("theight%", "%");
 						System.out.println("\t\theight: "+lyx_height);
 						continue;
 					}
@@ -1354,8 +1367,8 @@ public class Main implements Runnable {
 											: " autowidth") + "\""
 									+ " src=\"_IMG_\" /></div>";
 						} else {
-							template = "<!-- epub:clear page -->"
-									+ "<div class=\"svg_outer\">"
+							template = //"<!-- epub:clear page -->" +
+									"<div class=\"svg_outer\">"
 									+ "<div class=\"svg_inner\">"
 									+ "<svg xmlns=\"http://www.w3.org/2000/svg\""
 									+ " height=\"100%\""
@@ -1368,7 +1381,7 @@ public class Main implements Runnable {
 									+ " width=\"_WIDTH_\""
 									+ " xlink:href=\"_IMG_\"/>" + "</svg>"
 									+ "</div>" + "</div>";
-							template += "<!-- epub:clear page -->";
+							//template += "<!-- epub:clear page -->";
 						}
 
 						File img;
