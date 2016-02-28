@@ -1578,6 +1578,12 @@ public class Main implements Runnable {
 			if (inset.startsWith("\\ThisCenterWallPaper")) {
 				break parseert;
 			}
+			if (inset.startsWith("\\fontsize{")){
+				break parseert;
+			}
+			if (inset.startsWith("}")){
+				break parseert;
+			}
 			System.out.println("'" + inset + "'");
 			tmp.append(inset);
 
