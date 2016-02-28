@@ -1316,6 +1316,10 @@ public class Main implements Runnable {
 						lyx_height = StringUtils.substringAfter(param,
 								"height ");
 						tmp.append("<!-- height: " + lyx_height + " -->");
+						//switch to SVG mode for text height or page height sized images
+						if (lyx_height.contains("theight%")||lyx_height.contains("pheight%")){
+							current_svg_mode=true;
+						}
 						lyx_height = lyx_height.replace("pheight%", "%");
 						lyx_height = lyx_height.replace("theight%", "%");
 						System.out.println("\t\theight: "+lyx_height);
@@ -1335,9 +1339,6 @@ public class Main implements Runnable {
 							current_svg_mode = false;
 						}
 						if ("dice".equals(lyx_groupId)) {
-							current_svg_mode = false;
-						}
-						if ("comic_half".equals(lyx_groupId)) {
 							current_svg_mode = false;
 						}
 						String template;
