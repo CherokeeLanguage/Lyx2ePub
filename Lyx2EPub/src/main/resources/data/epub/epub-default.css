@@ -654,6 +654,6 @@ ol ol ol ol {
 	font-family: freeserif;
 }
 
-body {
-	font-family: freeserif;
+.paragraph_spacing_onehalf {
+	line-height: 1.5;
 }

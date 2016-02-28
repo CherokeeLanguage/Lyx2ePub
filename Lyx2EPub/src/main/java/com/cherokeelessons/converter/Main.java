@@ -820,6 +820,16 @@ public class Main implements Runnable {
 		StringBuilder tmp = new StringBuilder();
 		line = fixSpecials(line);
 		whichparsing: {
+			if (line.startsWith("\\paragraph_spacing ")) {
+				while (state.containsGroup("</div><!-- paragraph_spacing -->")) {
+					tmp.append(state.popGrouping());
+				}
+				state.pushGrouping("</div><!-- paragraph_spacing -->");
+				tmp.append("<div class=\"inline paragraph_spacing_"
+						+ StringUtils.substringAfter(line, " "));
+				tmp.append("\">");
+				break whichparsing;
+			}
 			if (line.startsWith("\\family ")) {
 				while (state.containsGroup("</div><!-- family -->")) {
 					tmp.append(state.popGrouping());
@@ -1688,6 +1698,8 @@ public class Main implements Runnable {
 			return line;
 		}
 		line = line.replace("\\SpecialChar \\ldots{}", "…");
+		//my 1st gen nook doesn't display soft-hyphens correctly
+		line = line.replace("\\SpecialChar \\-", "");
 		return line;
 	}
 

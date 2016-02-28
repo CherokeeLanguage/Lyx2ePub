@@ -20,7 +20,7 @@ public class Consts {
 			+ "<head>\n<meta http-equiv=\"content-type\"\n"
 			+ "	content=\"application/xhtml+xml; charset=UTF-8\" />\n"
 			+ "<title>.</title>\n"
-			+ "<link media=\"all\" rel=\"stylesheet\" type=\"text/css\" href=\"../Styles/stylesheet.css\" />\n"
+			+ "<link rel=\"stylesheet\" type=\"text/css\" href=\"../Styles/stylesheet.css\" />\n"//media=\"all\"
 			+ "</head>" + "\n<body>";
 	public static final String STOCK_FOOTER = "\n</body>" + "\n</html>";
 

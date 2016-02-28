@@ -623,3 +623,6 @@ ol ol ol ol {
 	text-indent: 0px;
 }
 
+.paragraph_spacing_onehalf {
+	line-height: 1.5;
+}
