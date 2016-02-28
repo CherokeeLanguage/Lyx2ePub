@@ -491,7 +491,7 @@ public class Main implements Runnable {
 						}
 						latin.append(syl2lat.get(letter + ""));
 					}
-					title=latin+"|"+title;
+					title=latin+" | "+title;
 				}
 				System.out.println("\tAdding Chapter: '"+title+"'");
 				sectionpage.setTitle(title);
@@ -546,7 +546,7 @@ public class Main implements Runnable {
 						}
 						latin.append(syl2lat.get(letter + ""));
 					}
-					title=latin+"|"+title;
+					title=latin+" | "+title;
 				}
 				
 				toc_section.append("<li class=\"toc\">");
