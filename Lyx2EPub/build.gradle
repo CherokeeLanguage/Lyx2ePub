@@ -5,7 +5,7 @@ plugins {
 apply plugin: "java"
 apply plugin: "eclipse-wtp"
 
-version '20151229'
+version '20160731'
 
 sourceCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
@@ -16,8 +16,8 @@ if (new File(RTJAR).exists()) {
 }
   
 repositories {
-        mavenCentral()
         jcenter()
+        maven { url "https://jitpack.io/" }
         maven {
         	url "https://github.com/psiegman/mvn-repo/raw/master/releases"
         }
@@ -50,6 +50,21 @@ configurations.all {
   resolutionStrategy {
   	force 'xml-apis:xml-apis:1.4.01'
   }
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	javadoc.failOnError=false
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 30, 'seconds'
 }
 
 eclipseJdt << {
