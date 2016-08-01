@@ -1,9 +1,10 @@
 plugins {
-  id "us.kirchmeier.capsule" version "1.0-rc1"
+  id "us.kirchmeier.capsule" version "1.0.2"
 }
 
 apply plugin: "java"
 apply plugin: "eclipse-wtp"
+apply plugin: "maven"
 
 version '20160731'
 
@@ -43,13 +44,18 @@ dependencies {
         compile 'org.slf4j:slf4j-nop:1.7.12'
         compile 'com.io7m.xom:xom:1.2.10'
         compile 'net.lingala.zip4j:zip4j:1.3.2'
-        compile 'com.fasterxml.jackson.core:jackson-databind:2.5.0'
+        compile 'com.fasterxml.jackson.core:jackson-databind:2.8.1'
     }
 
 configurations.all {
   resolutionStrategy {
   	force 'xml-apis:xml-apis:1.4.01'
   }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -67,6 +73,7 @@ configurations.all {
     resolutionStrategy.cacheChangingModulesFor 30, 'seconds'
 }
 
+
 eclipseJdt << {
     File f = file('.settings/org.eclipse.core.resources.prefs')
     f.write('eclipse.preferences.version=1\n')
@@ -79,12 +86,11 @@ eclipseJdt << {
 
 eclipse {
 	project {
-		name = 'Lyx2EPub'
-		comment = 'Lyx2EPub'
+		name = 'Lyx2ePub'
+		natures 'org.eclipse.buildship.core.gradleprojectnature'
 	}
 	jdt {
 		sourceCompatibility=1.8
-		targetCompatibility=1.8
 	}
 	wtp {
 		facet {
@@ -126,8 +132,4 @@ project.afterEvaluate {
 			}
 		}
 	}
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.10'
 }
