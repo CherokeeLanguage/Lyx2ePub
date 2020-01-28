@@ -128,7 +128,7 @@ public class MainApp implements Runnable {
 			}
 			System.out.println("Settings file: " + settings_file.getName());
 			if (!settings_file.exists()) {
-				json.toJson(settings_file, settingsTemplate);
+				throw new RuntimeException("Missing "+settings_file.getAbsolutePath());
 			}
 			_run();
 			System.out.println("Done: " + new java.util.Date());
@@ -776,10 +776,10 @@ public class MainApp implements Runnable {
 
 		meta.setLanguage("en");
 
-		ArrayList<String> rights = new ArrayList<String>();
+		ArrayList<String> rights = new ArrayList<>();
 		rights.add(Consts.copy + settings.copyright);
 
-		ArrayList<String> subjList = new ArrayList<String>();
+		ArrayList<String> subjList = new ArrayList<>();
 		for (String subj : settings.subjects) {
 			subjList.add(subj);
 		}
@@ -926,8 +926,9 @@ public class MainApp implements Runnable {
 				tmp.append("<div class=\"box float\">");
 				int g = state.size();
 				state.pushGrouping("</div>");
-				while (!StringUtils.isEmpty(iline.next()))
+				while (!StringUtils.isEmpty(iline.next())) {
 					;
+				}
 				tmp.append(parseUntil("\\end_inset", iline, state));
 				while (state.size() > g) {
 					tmp.append(state.popGrouping());
@@ -964,10 +965,12 @@ public class MainApp implements Runnable {
 				String ref = "";
 				while (iline.hasNext()) {
 					ref = iline.next();
-					if (ref.startsWith("name "))
+					if (ref.startsWith("name ")) {
 						break;
-					if (StringUtils.isEmpty(ref))
+					}
+					if (StringUtils.isEmpty(ref)) {
 						break;
+					}
 				}
 				tmp.append("<a class=\"CommandInsetLabel\" id=\"");
 				tmp.append(StringUtils.substringBetween(ref, "\"").replaceAll("[^a-zA-Z0-9]", "_"));
@@ -980,10 +983,12 @@ public class MainApp implements Runnable {
 				String ref = "";
 				while (iline.hasNext()) {
 					ref = iline.next();
-					if (ref.startsWith("reference "))
+					if (ref.startsWith("reference ")) {
 						break;
-					if (StringUtils.isEmpty(ref))
+					}
+					if (StringUtils.isEmpty(ref)) {
 						break;
+					}
 				}
 				String substringBetween = StringUtils.substringBetween(ref, "\"");
 				tmp.append("<a class=\"CommandInsetReference\" href=\"#");
@@ -1457,13 +1462,13 @@ public class MainApp implements Runnable {
 		}
 		discardUntil("\\begin_layout Plain Layout", iline, state);
 		String inset = parseUntil("\\end_layout", iline, state);
-		parseert: {
+		parseErt: {
 			if (inset.startsWith("\\rule{")) {
 				StringBuilder style = new StringBuilder();
 				String[] parms = StringUtils.substringsBetween(inset, "{", "}");
 				if (parms != null) {
 					int w = Integer.parseInt(parms[0].replaceAll("[^0-9]", ""));
-					String percent = ((w * 100) / 6) + "%";
+					String percent = w * 100 / 6 + "%";
 					style.append("width: " + percent + ";");
 					if (parms.length > 1) {
 						style.append("border-height: " + parms[1] + ";");
@@ -1472,49 +1477,52 @@ public class MainApp implements Runnable {
 				tmp.append("<hr style=\"border-style: solid;");
 				tmp.append(style.toString());
 				tmp.append("\"/>");
-				break parseert;
+				break parseErt;
 			}
 			if (inset.startsWith("%")) {
-				break parseert;
+				break parseErt;
 			}
 			if (inset.startsWith("\\renewcommand*\\contentsname")) {
-				break parseert;
+				break parseErt;
+			}
+			if (inset.startsWith("\\renewcommand{\\chaptername")) {
+				break parseErt;
 			}
 			if (inset.startsWith("\\phantomsection")) {
-				break parseert;
+				break parseErt;
 			}
 			if (inset.startsWith("\\setlength")) {
-				break parseert;
+				break parseErt;
 			}
 			if (inset.startsWith("\\frontmatter")) {
-				break parseert;
+				break parseErt;
 			}
 			if (inset.startsWith("\\pagestyle")) {
-				break parseert;
+				break parseErt;
 			}
 			if (inset.startsWith("\\mainmatter")) {
-				break parseert;
+				break parseErt;
 			}
 			if (inset.startsWith("\\pagenumbering")) {
-				break parseert;
+				break parseErt;
 			}
 			if (inset.startsWith("\\thispagestyle")) {
-				break parseert;
+				break parseErt;
 			}
 			if (inset.startsWith("\\begin{")) {
-				break parseert;
+				break parseErt;
 			}
 			if (inset.startsWith("\\end{")) {
-				break parseert;
+				break parseErt;
 			}
 			if (inset.startsWith("\\ThisCenterWallPaper")) {
-				break parseert;
+				break parseErt;
 			}
 			if (inset.startsWith("\\fontsize{")) {
-				break parseert;
+				break parseErt;
 			}
 			if (inset.startsWith("}")) {
-				break parseert;
+				break parseErt;
 			}
 			System.out.println("'" + inset + "'");
 			tmp.append(inset);
@@ -1617,7 +1625,8 @@ public class MainApp implements Runnable {
 		if (!line.contains("\\")) {
 			return line;
 		}
-		line = line.replace("\\SpecialChar \\ldots{}", "…");
+		line = line.replace("\\SpecialChar \\ldots{}", "\u2026");
+		line = line.replace("\\SpecialChar ldots", "\u2026");
 		// my 1st gen nook doesn't display soft-hyphens correctly
 		line = line.replace("\\SpecialChar \\-", "");
 		return line;
@@ -1759,7 +1768,7 @@ public class MainApp implements Runnable {
 		char chrStart = 'Ꭰ';
 		String[] vowels = new String[6];
 
-		HashMap<String, String> syllabary2latin = new HashMap<String, String>();
+		HashMap<String, String> syllabary2latin = new HashMap<>();
 
 		vowels[0] = "a";
 		vowels[1] = "e";
@@ -1948,7 +1957,7 @@ public class MainApp implements Runnable {
 		char chrStart = 'Ꭰ';
 		String[] vowels = new String[6];
 
-		HashMap<String, String> latin2syllabary = new HashMap<String, String>();
+		HashMap<String, String> latin2syllabary = new HashMap<>();
 
 		vowels[0] = "a";
 		vowels[1] = "e";

@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.TimeZone;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -81,11 +80,12 @@ public class JsonConverter {
 	}
 
 	public <T> T fromJson(String json, Class<T> classOfT) {
-		if (json == null)
+		if (json == null) {
 			return null;
+		}
 		T result = null;
 		ObjectReader reader;
-		reader = mapper.reader(classOfT);
+		reader = mapper.readerFor(classOfT);
 		try {
 			result = reader.readValue(json);
 		} catch (JsonProcessingException e) {
@@ -101,11 +101,13 @@ public class JsonConverter {
 			return null;
 		}
 		ObjectReader reader;
-		reader = mapper.reader(classOfT);
+		reader = mapper.readerFor(classOfT);
 		try {
 			return reader.readValue(src);
 		} catch (JsonProcessingException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -115,7 +117,7 @@ public class JsonConverter {
 			return null;
 		}
 		ObjectReader reader;
-		reader = mapper.reader(classOfT);
+		reader = mapper.readerFor(classOfT);
 		try {
 			return reader.readValue(src);
 		} catch (JsonProcessingException e) {
