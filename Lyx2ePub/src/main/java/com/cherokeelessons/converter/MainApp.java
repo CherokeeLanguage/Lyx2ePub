@@ -952,6 +952,14 @@ public class MainApp implements Runnable {
 			}
 			if (line.startsWith("\\begin_inset space \\quad{}")) {
 				tmp.append("<!-- space-quad -->");
+				tmp.append("<br/>");
+				discardUntil("\\end_inset", iline, new StateObject());
+				break whichparsing;
+			}
+			if (line.startsWith("\\begin_inset space \\qquad{}")) {
+				tmp.append("<!-- space-qquad -->");
+				tmp.append("<br/>");
+				tmp.append("<br/>");
 				discardUntil("\\end_inset", iline, new StateObject());
 				break whichparsing;
 			}
