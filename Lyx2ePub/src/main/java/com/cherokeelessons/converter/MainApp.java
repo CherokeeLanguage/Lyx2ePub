@@ -1521,18 +1521,18 @@ public class MainApp implements Runnable {
 			}
 			if (inset.startsWith("\\begin{")) {
 				if (inset.startsWith("\\begin{multicols}")) {
-					tmp.append("<div class=\"Standard\"><br/>\n");
+					tmp.append("\n<!-- begin multicols -->\n<br />\n");
 				}
 				break parseErt;
 			}
 			if (inset.startsWith("\\end{")) {
 				if (inset.startsWith("\\end{multicols}")) {
-					tmp.append("</div>\n");
+					tmp.append("\n<!-- end multicols -->\n");
 				}
 				break parseErt;
 			}
 			if (inset.startsWith("\\columnbreak")) {
-				tmp.append("</div>\n<div class=\"Standard\"><br />");
+				tmp.append("\n<!-- columnbreak -->\n<br />\n");
 				break parseErt;
 			}
 			if (inset.startsWith("\\ThisCenterWallPaper")) {
