@@ -1494,6 +1494,8 @@ public class MainApp implements Runnable {
 				break parseErt;
 			}
 			if (inset.startsWith("\\renewcommand{\\chaptername")) {
+				//discardUntil("\\end_inset", iline, state);
+				//discardUntil("\\end_inset", iline, state);
 				break parseErt;
 			}
 			if (inset.startsWith("\\phantomsection")) {
@@ -1518,9 +1520,19 @@ public class MainApp implements Runnable {
 				break parseErt;
 			}
 			if (inset.startsWith("\\begin{")) {
+				if (inset.startsWith("\\begin{multicols}")) {
+					tmp.append("<div class=\"Standard\"><br/>\n");
+				}
 				break parseErt;
 			}
 			if (inset.startsWith("\\end{")) {
+				if (inset.startsWith("\\end{multicols}")) {
+					tmp.append("</div>\n");
+				}
+				break parseErt;
+			}
+			if (inset.startsWith("\\columnbreak")) {
+				tmp.append("</div>\n<div class=\"Standard\"><br />");
 				break parseErt;
 			}
 			if (inset.startsWith("\\ThisCenterWallPaper")) {
