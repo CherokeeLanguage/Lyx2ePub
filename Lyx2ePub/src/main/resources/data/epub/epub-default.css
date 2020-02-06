@@ -227,6 +227,17 @@ ul {
 	list-style: disc;
 }
 
+.ColumnLayout {
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	text-indent: 0px;
+	margin-bottom: .25em;
+	margin-top: .25em;
+	min-width: 32em;
+	display: inline-block;
+}
+
 .Standard {
 	font-style: normal;
 	font-variant: normal;

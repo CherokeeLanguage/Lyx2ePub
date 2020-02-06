@@ -1522,6 +1522,7 @@ public class MainApp implements Runnable {
 			if (inset.startsWith("\\begin{")) {
 				if (inset.startsWith("\\begin{multicols}")) {
 					tmp.append("\n<!-- begin multicols -->\n<br />\n");
+					break parseErt;
 				}
 				break parseErt;
 			}
