@@ -335,8 +335,30 @@ ul {
 	clear: both;
 }
 
+/* Command             10pt    11pt    12pt */
+/* \tiny               5       6       6 */
+/* \scriptsize         7       8       8 */
+/* \footnotesize       8       9       10 */
+/* \small              9       10      10.95 */
+/* \normalsize         10      10.95   12 */
+/* \large              12      12      14.4 */
+/* \Large              14.4    14.4    17.28 */
+/* \LARGE              17.28   17.28   20.74 */
+/* \huge               20.74   20.74   24.88 */
+/* \Huge               24.88   24.88   24.88 */
+
+.Part {
+	font-size: 207%;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: bold;
+	text-indent: 0px;
+	margin-bottom: .25em;
+	margin-top: .25em;
+}
+
 .Chapter {
-	font-size: 190%;
+	font-size: 173%;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
@@ -346,7 +368,7 @@ ul {
 }
 
 .Section {
-	font-size: 141%;
+	font-size: 144%;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
@@ -356,7 +378,7 @@ ul {
 }
 
 .Subsection {
-	font-size: 117%;
+	font-size: 120%;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
@@ -382,7 +404,7 @@ ul {
 	font-weight: bold;
 	text-indent: 0px;
 	text-decoration: underline;
-	margin-right: .5em;
+	margin-right: .5em;	
 }
 
 .Subparagraph {
@@ -395,8 +417,18 @@ ul {
 	margin-right: .5em;
 }
 
+.Part_ {
+	font-size: 207%;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: bold;
+	text-indent: 0px;
+	margin-bottom: .25em;
+	margin-top: .25em;
+}
+
 .Chapter_ {
-	font-size: 190%;
+	font-size: 173%;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
@@ -406,7 +438,7 @@ ul {
 }
 
 .Section_ {
-	font-size: 141%;
+	font-size: 144%;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
@@ -416,7 +448,7 @@ ul {
 }
 
 .Subsection_ {
-	font-size: 117%;
+	font-size: 120%;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
@@ -442,7 +474,7 @@ ul {
 	font-weight: bold;
 	text-indent: 0px;
 	text-decoration: underline;
-	margin-right: .5em;
+	margin-right: .5em;	
 }
 
 .Subparagraph_ {
