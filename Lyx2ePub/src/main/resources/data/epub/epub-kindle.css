@@ -66,7 +66,7 @@
 }
 
 body {
-	font-size: 100%;
+	font-size: 10pt;
 	text-align: justify;
 }
 
@@ -148,7 +148,7 @@ body {
 
 .dt {
 	font-weight: bold;
-	font-size: 125%;
+	font-size: 12pt;
 	text-decoration: none;
 }
 
@@ -224,43 +224,43 @@ body {
 }
 
 .fs_tiny {
-	font-size: 68%;
+	font-size: 5pt;
 }
 
 .fs_smallest {
-	font-size: 79%;
+	font-size: 7pt;
 }
 
 .fs_smaller {
-	font-size: 85%;
+	font-size: 8pt;
 }
 
 .fs_small {
-	font-size: 92%;
+	font-size: 9pt;
 }
 
 .fs_normal {
-	font-size: 100%;
+	font-size: 10pt;
 }
 
 .fs_large {
-	font-size: 117%;
+	font-size: 12pt;
 }
 
 .fs_larger {
-	font-size: 141%;
+	font-size: 14.4pt;
 }
 
 .fs_largest {
-	font-size: 158%;
+	font-size: 17.28pt;
 }
 
 .fs_huge {
-	font-size: 190%;
+	font-size: 20.74pt;
 }
 
 .fs_giant {
-	font-size: 228%;
+	font-size: 24.88pt;
 }
 
 ul ul ul ul {
@@ -308,12 +308,12 @@ ul {
 	margin-right: 5%;
 	margin-bottom: 1em;
 	margin-top: 1em;
-	font-size: 85%;
+	font-size: 9pt;
 	display: inline-block;
 }
 
 .Title {
-	font-size: 158%;
+	font-size: 17.28pt;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
@@ -321,11 +321,10 @@ ul {
 	width: auto;
 	text-align: center;
 	clear: both;
-	font-size: 158%;
 }
 
 .Author {
-	font-size: 117%;
+	font-size: 14.4pt;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
@@ -348,143 +347,157 @@ ul {
 /* \Huge               24.88   24.88   24.88 */
 
 .Part {
-	font-size: 207%;
+	font-size: 20.74pt;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
 	text-indent: 0px;
 	margin-bottom: .25em;
 	margin-top: .25em;
+	text-align: center;
 }
 
 .Chapter {
-	font-size: 173%;
+	font-size: 17.28pt;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
 	text-indent: 0px;
 	margin-bottom: .25em;
 	margin-top: .25em;
+	text-align: left;
 }
 
 .Section {
-	font-size: 144%;
+	font-size: 14.4pt;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
 	text-indent: 0px;
 	margin-bottom: .25em;
 	margin-top: .25em;
+	text-align: left;
 }
 
 .Subsection {
-	font-size: 120%;
+	font-size: 12pt;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
 	text-indent: 0px;
 	margin-bottom: .25em;
 	margin-top: .25em;
+	text-align: left;
 }
 
 .Subsubsection {
-	font-size: 100%;
+	font-size: 10pt;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
 	text-indent: 0px;
 	margin-bottom: .25em;
 	margin-top: .25em;
+	text-align: left;
 }
 
 .Paragraph {
-	font-size: 100%;
+	font-size: 10pt;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
 	text-indent: 0px;
 	text-decoration: underline;
-	margin-right: .5em;	
+	margin-right: .5em;
+	text-align: left;
 }
 
 .Subparagraph {
-	font-size: 100%;
+	font-size: 10pt;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
 	text-indent: 0px;
 	text-decoration: underline;
 	margin-right: .5em;
+	text-align: left;
 }
 
 .Part_ {
-	font-size: 207%;
+	font-size: 20.74pt;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
 	text-indent: 0px;
 	margin-bottom: .25em;
 	margin-top: .25em;
+	text-align: center;
 }
 
 .Chapter_ {
-	font-size: 173%;
+	font-size: 17.28pt;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
 	text-indent: 0px;
 	margin-bottom: .25em;
 	margin-top: .25em;
+	text-align: left;
 }
 
 .Section_ {
-	font-size: 144%;
+	font-size: 14.4pt;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
 	text-indent: 0px;
 	margin-bottom: .25em;
 	margin-top: .25em;
+	text-align: left;
 }
 
 .Subsection_ {
-	font-size: 120%;
+	font-size: 12pt;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
 	text-indent: 0px;
 	margin-bottom: .25em;
 	margin-top: .25em;
+	text-align: left;
 }
 
 .Subsubsection_ {
-	font-size: 100%;
+	font-size: 10pt;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
 	text-indent: 0px;
 	margin-bottom: .25em;
 	margin-top: .25em;
+	text-align: left;
 }
 
 .Paragraph_ {
-	font-size: 100%;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: bold;
-	text-indent: 0px;
-	text-decoration: underline;
-	margin-right: .5em;	
-}
-
-.Subparagraph_ {
-	font-size: 100%;
+	font-size: 10pt;
 	font-style: normal;
 	font-variant: normal;
 	font-weight: bold;
 	text-indent: 0px;
 	text-decoration: underline;
 	margin-right: .5em;
+	text-align: left;
+}
+
+.Subparagraph_ {
+	font-size: 10pt;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: bold;
+	text-indent: 0px;
+	text-decoration: underline;
+	margin-right: .5em;
+	text-align: left;
 }
 
 .hfill {
@@ -519,11 +532,12 @@ ul {
 }
 
 td {
-	font-size: .9em;
+	font-size: 9pt;
 	border: none;
 	padding: 0px;
 	margin: 0px;
-	padding-left: .1em;
+	padding-left: .3em;
+	padding-right: .3em;
 }
 
 tr {
@@ -556,7 +570,7 @@ table {
 
 .floating_foot {
 	width: 30%;
-	font-size: 68%;
+	font-size: 7pt;
 	font-weight: normal;
 	font-style: italic;
 	display: inline-block;
@@ -571,19 +585,19 @@ table {
 	font-style: normal;
 	font-variant: normal;
 	font-weight: normal;
-	font-size: 125%;
+	font-size: 12pt;
 }
 
 .verse_number {
 	font-style: italic;
 	font-variant: normal;
 	font-weight: normal;
-	font-size: 75%;
+	font-size: 8pt;
 }
 
 .dropcap {
 	float: left;
-	font-size: 125%;
+	font-size: 12pt;
 	padding: .1em;
 	margin: .1em;
 }
