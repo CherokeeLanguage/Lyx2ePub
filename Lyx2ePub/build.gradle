@@ -70,9 +70,9 @@ artifacts {
     archives javadocJar
 }
 
-configurations.all {
+/*configurations.all {
     resolutionStrategy.cacheChangingModulesFor 30, 'seconds'
-}
+}*/
 
 
 eclipseJdt << {

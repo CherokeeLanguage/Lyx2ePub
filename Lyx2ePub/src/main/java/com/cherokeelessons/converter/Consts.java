@@ -34,8 +34,9 @@ public class Consts {
 	public static final String MISC = "Misc/";
 	public static final String META_INF = "/META-INF/";
 
-	public static final String StyleSheet = "/data/epub/epub-default.css";
-	public static final String KindleStyleSheet = "/data/epub/epub-kindle.css";
-	public static final String FreeSerifSheet = "/data/epub/freeserif.css";
-	public static final String KF8 = "/data/epub/kf8.css";
+	public static final String RESOURCE_PREFIX = "/data/epub/";
+	public static final String StyleSheet = RESOURCE_PREFIX+"epub-default.css";
+	public static final String KindleStyleSheet = RESOURCE_PREFIX+"epub-kindle.css";
+	public static final String FreeSerifSheet = RESOURCE_PREFIX+"freeserif.css";
+	public static final String KF8 = RESOURCE_PREFIX+"kf8.css";
 }

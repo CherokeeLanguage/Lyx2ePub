@@ -50,6 +50,7 @@ import nl.siegmann.epublib.domain.Spine;
 import nl.siegmann.epublib.domain.TOCReference;
 import nl.siegmann.epublib.epub.EpubWriter;
 
+@SuppressWarnings("javadoc")
 public class MainApp implements Runnable {
 
 	/*
@@ -128,7 +129,7 @@ public class MainApp implements Runnable {
 			}
 			System.out.println("Settings file: " + settings_file.getName());
 			if (!settings_file.exists()) {
-				throw new RuntimeException("Missing "+settings_file.getAbsolutePath());
+				throw new RuntimeException("Missing " + settings_file.getAbsolutePath());
 			}
 			_run();
 			System.out.println("Done: " + new java.util.Date());
@@ -268,9 +269,11 @@ public class MainApp implements Runnable {
 			}
 			parameters.setFileNameInZip(fileNameInZip);
 			parameters.setSourceExternalStream(true);
-			InputStream is = getClass().getResourceAsStream("/data/epub/com.apple.ibooks.display-options.xml");
-			zip.addStream(is, parameters);
-			IOUtils.closeQuietly(is);
+			try (InputStream is = getClass().getResourceAsStream("/data/epub/com.apple.ibooks.display-options.xml")) {
+				zip.addStream(is, parameters);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		} catch (ZipException e) {
 			throw new RuntimeException(e);
 		}
@@ -315,10 +318,12 @@ public class MainApp implements Runnable {
 		Resource cover = getFrontCoverImage();
 		epub.setCoverImage(cover);
 
-		res.add(getFont("FreeSerif.ttf"));
-		res.add(getFont("FreeSerifBold.ttf"));
-		res.add(getFont("FreeSerifBoldItalic.ttf"));
-		res.add(getFont("FreeSerifItalic.ttf"));
+		if (settings.isEmbed_free_serif()) {
+			res.add(getFont("FreeSerif.ttf"));
+			res.add(getFont("FreeSerifBold.ttf"));
+			res.add(getFont("FreeSerifBoldItalic.ttf"));
+			res.add(getFont("FreeSerifItalic.ttf"));
+		}
 
 		// res.add(getFont("FreeSans.ttf"));
 		// res.add(getFont("FreeSansBold.ttf"));
@@ -425,17 +430,17 @@ public class MainApp implements Runnable {
 			String section = lsections.next();
 			counter++;
 			// add images
-			int img_counter = 0;
+			int imgCounter = 0;
 			if (section.contains("<!-- IMG: ")) {
 				String[] images = StringUtils.substringsBetween(section, "<!-- IMG: ", " -->");
 				if (images != null) {
 					for (String image : images) {
-						img_counter++;
+						imgCounter++;
 						String image_name = FilenameUtils.getName(image);
 						final File lfile = new File(settings.image_tmp, image);
 						try (InputStream imageis = FileUtils.openInputStream(lfile)) {
 							Resource img = new Resource(imageis, Consts.IMAGES + image_name);
-							img.setId("IMG_" + img_counter);
+							img.setId("IMG_" + imgCounter);
 							res.add(img);
 						} catch (IOException e) {
 							throw new RuntimeException(e);
@@ -642,20 +647,22 @@ public class MainApp implements Runnable {
 		Resource coverPage = null;
 		try {
 			String image = FilenameUtils.getName(settings.coverImage);
-			InputStream is_coverXhtml = getClass().getResourceAsStream("/data/epub/cover.xhtml");
-			String xhtml = IOUtils.toString(is_coverXhtml);
-			InputStream is_coverImg;
-			is_coverImg = FileUtils.openInputStream(new File(settings.sourcedir, settings.coverImage));
-			BufferedImage bimg = ImageIO.read(is_coverImg);
+			
+			String xhtml;
+			try (InputStream is_coverXhtml = getClass().getResourceAsStream("/data/epub/cover.xhtml")) {
+				xhtml = IOUtils.toString(is_coverXhtml);
+			}
+			BufferedImage bimg;
+			try (InputStream is_coverImg = FileUtils.openInputStream(new File(settings.sourcedir, settings.coverImage))) {
+				bimg = ImageIO.read(is_coverImg);
+			}
 			int width = bimg.getWidth();
 			int height = bimg.getHeight();
 			xhtml = xhtml.replace("_WIDTH_", width + "").replace("_HEIGHT_", height + "");
 			xhtml = xhtml.replace("_COVER_IMG_", image);
-			InputStream is = IOUtils.toInputStream(xhtml);
-			coverPage = new Resource(is, Consts.TEXT + "cover.xhtml");
-			IOUtils.closeQuietly(is_coverXhtml);
-			IOUtils.closeQuietly(is_coverImg);
-			IOUtils.closeQuietly(is);
+			try (InputStream is = IOUtils.toInputStream(xhtml)) {
+				coverPage = new Resource(is, Consts.TEXT + "cover.xhtml");
+			}
 			coverPage.setTitle("Cover Page");
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -674,14 +681,24 @@ public class MainApp implements Runnable {
 	private Resource getDefaultStylesheet(Target target) {
 		Resource sheet = null;
 		try {
-			InputStream css;
+			String resource;
 			if (target.equals(Target.Kindle)) {
-				css = getClass().getResourceAsStream(Consts.KindleStyleSheet);
+				if (StringUtils.isBlank(settings.getKindleCss())) {
+					resource = Consts.KindleStyleSheet;
+				} else {
+					resource = Consts.RESOURCE_PREFIX + settings.getKindleCss();
+				}
 			} else {
-				css = getClass().getResourceAsStream(Consts.StyleSheet);
+				if (StringUtils.isBlank(settings.getEpubCss())) {
+					resource = Consts.StyleSheet;
+				} else {
+					resource = Consts.RESOURCE_PREFIX + settings.getEpubCss();
+				}
 			}
-			sheet = new Resource(css, Consts.STYLES + "stylesheet.css");
-			IOUtils.closeQuietly(css);
+			try (InputStream css = getClass().getResourceAsStream(resource)) {
+				System.out.println(" - Style sheet: "+resource);
+				sheet = new Resource(css, Consts.STYLES + "stylesheet.css");
+			}
 			sheet.setTitle("StyleSheet");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -693,10 +710,9 @@ public class MainApp implements Runnable {
 	private Resource getKF8Stylesheet() {
 		Resource sheet = null;
 		try {
-			InputStream css;
-			css = getClass().getResourceAsStream(Consts.KF8);
-			sheet = new Resource(css, Consts.STYLES + "kf8.css");
-			IOUtils.closeQuietly(css);
+			try (InputStream css = getClass().getResourceAsStream(Consts.KF8)) {
+				sheet = new Resource(css, Consts.STYLES + "kf8.css");
+			}
 			sheet.setTitle("KF8");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -927,7 +943,7 @@ public class MainApp implements Runnable {
 				int g = state.size();
 				state.pushGrouping("</div>");
 				while (!StringUtils.isEmpty(iline.next())) {
-					;
+					//skip blank lines
 				}
 				tmp.append(parseUntil("\\end_inset", iline, state));
 				while (state.size() > g) {
@@ -1494,8 +1510,8 @@ public class MainApp implements Runnable {
 				break parseErt;
 			}
 			if (inset.startsWith("\\renewcommand{\\chaptername")) {
-				//discardUntil("\\end_inset", iline, state);
-				//discardUntil("\\end_inset", iline, state);
+				// discardUntil("\\end_inset", iline, state);
+				// discardUntil("\\end_inset", iline, state);
 				break parseErt;
 			}
 			if (inset.startsWith("\\phantomsection")) {

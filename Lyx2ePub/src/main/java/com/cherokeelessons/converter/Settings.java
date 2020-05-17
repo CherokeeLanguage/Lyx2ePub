@@ -5,7 +5,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("serial")
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@SuppressWarnings({ "serial", "javadoc", "unqualified-field-access" })
 public class Settings implements Serializable {
 	public String description;
 	public String ISBN_formatted;
@@ -29,6 +31,36 @@ public class Settings implements Serializable {
 	public boolean svg_mode;
 	public String image_tmp;
 
+	@JsonProperty("epub_css")
+	private String epubCss;
+	public String getEpubCss() {
+		return epubCss;
+	}
+
+	public void setEpubCss(String epubCss) {
+		this.epubCss = epubCss;
+	}
+
+	public String getKindleCss() {
+		return kindleCss;
+	}
+
+	public void setKindleCss(String kindleCss) {
+		this.kindleCss = kindleCss;
+	}
+
+	public boolean isEmbed_free_serif() {
+		return embed_free_serif;
+	}
+
+	public void setEmbed_free_serif(boolean embed_free_serif) {
+		this.embed_free_serif = embed_free_serif;
+	}
+
+	@JsonProperty("kindle_css")
+	private String kindleCss;
+	private boolean embed_free_serif;
+
 	public Settings() {
 		description = "... description ...";
 		ISBN_formatted = "ISBN: 978-0-000-00000-0";
@@ -44,10 +76,10 @@ public class Settings implements Serializable {
 		title = "... title ...";
 
 		url = "http://www.CherokeeLessons.com/";
-		authors = new ArrayList<String>();
+		authors = new ArrayList<>();
 		authors.add("Michael Joyner");
 		copyright = "Michael Joyner, All Rights Reserved. (CC BY 3.0 US)";
-		subjects = new ArrayList<String>();
+		subjects = new ArrayList<>();
 		subjects.add("FOR031000");
 		subjects.add("Foreign Language Study, Native American Languages");
 		subjects.add("LAN012000");
@@ -67,5 +99,10 @@ public class Settings implements Serializable {
 		subjects.add("ᏗᎪᏪᎵ");
 		
 		svg_mode=false;
+		
+		epubCss = "epub-default.css";
+		kindleCss = "kindle-default.css";
+		
+		embed_free_serif = true;
 	}
 }
