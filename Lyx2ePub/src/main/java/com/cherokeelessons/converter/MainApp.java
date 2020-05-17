@@ -459,7 +459,7 @@ public class MainApp implements Runnable {
 			}
 			if (section.contains("class=\"Title") && titlePage.getSize() == 0) {
 				section = targetedHtmlManipulation(section, target);
-				section = Consts.STOCK_HEADER + "<div class=\"vcenter\">" + section + "</div>" + Consts.STOCK_FOOTER;
+				section = Consts.STOCK_HEADER + "<div class=\"extraTopMargin\">" + section + "</div>" + Consts.STOCK_FOOTER;
 				titlePage.setData(asBytes(section));
 				epub.addSection("Title Page", titlePage);
 				continue;
@@ -489,11 +489,11 @@ public class MainApp implements Runnable {
 					title = StringUtils.substringAfter(title, ">");
 				}
 				title = StringUtils.substringBefore(title, "<");
-				boolean vcenter = "<!-- Part -->".equals(StringUtils.strip(StringUtils.substringAfter(section, "</div>")));
-				vcenter = vcenter || "<!-- Part_ -->".equals(StringUtils.strip(StringUtils.substringAfter(section, "</div>")));
+				boolean extraTopMargin = "<!-- Part -->".equals(StringUtils.strip(StringUtils.substringAfter(section, "</div>")));
+				extraTopMargin = extraTopMargin || "<!-- Part_ -->".equals(StringUtils.strip(StringUtils.substringAfter(section, "</div>")));
 				section = targetedHtmlManipulation(section, target);
-				if (vcenter) {
-					section = "<div class=\"vcenter\">"+section+"</div>";
+				if (extraTopMargin) {
+					section = "<div class=\"extraTopMargin\">"+section+"</div>";
 				}
 				section = Consts.STOCK_HEADER + section + Consts.STOCK_FOOTER;
 				Resource partPage = new Resource(section, Consts.TEXT + url);

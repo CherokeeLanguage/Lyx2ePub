@@ -5,14 +5,14 @@ body {
 	text-align: justify;
 }
 
-.vcenter {
-    margin-top: 50vh;
+.extraTopMargin {
+    margin-top: 20%;
     margin-bottom: 0px;
     margin-left: 0px;
     margin-right: 0px;
     text-align: center;
-    -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
+/*     -webkit-transform: translateY(-50%); */
+/*     transform: translateY(-50%); */
 }
 
 .rightblock {
@@ -334,7 +334,7 @@ ul {
 	text-indent: 0px;
 	margin-bottom: .25em;
 	margin-top: .25em;
-	text-align: left;
+	text-align: center;
 }
 
 .Subsection {
