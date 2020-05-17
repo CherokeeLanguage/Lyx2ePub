@@ -432,7 +432,7 @@ public class MainApp implements Runnable {
 			lsections.set(section);
 		}
 
-		TOCReference activeChapter = null;
+		TOCReference activePage = null;
 		counter = 0;
 		lsections = sections.listIterator();
 		while (lsections.hasNext()) {
@@ -459,7 +459,7 @@ public class MainApp implements Runnable {
 			}
 			if (section.contains("class=\"Title") && titlePage.getSize() == 0) {
 				section = targetedHtmlManipulation(section, target);
-				section = Consts.STOCK_HEADER + section + Consts.STOCK_FOOTER;
+				section = Consts.STOCK_HEADER + "<div class=\"vcenter\">" + section + "</div>" + Consts.STOCK_FOOTER;
 				titlePage.setData(asBytes(section));
 				epub.addSection("Title Page", titlePage);
 				continue;
@@ -478,10 +478,68 @@ public class MainApp implements Runnable {
 				epub.addSection("Table of Contents", tocPage);
 				continue;
 			}
-			//treat PARTS and CHAPTERS the same for file divisions
-			if (section.contains("class=\"Chapter\"") || section.contains("class=\"Part\"")) {
-				section = section.replace("class=\"Part\"", "class=\"Chapter\"");
-				
+			/**
+			 * Part mark
+			 */
+			if (section.contains("class=\"Part\"") || section.contains("class=\"Part_\"")) {
+				section = section.replace("class=\"Part_\"", "class=\"Part\"");
+				String url = String.format("x_%03d_part.xhtml", counter);
+				String title = StringUtils.substringBetween(section, "class=\"Part\">", "<");
+				while (title.startsWith("<")) {
+					title = StringUtils.substringAfter(title, ">");
+				}
+				title = StringUtils.substringBefore(title, "<");
+				boolean vcenter = "<!-- Part -->".equals(StringUtils.strip(StringUtils.substringAfter(section, "</div>")));
+				vcenter = vcenter || "<!-- Part_ -->".equals(StringUtils.strip(StringUtils.substringAfter(section, "</div>")));
+				section = targetedHtmlManipulation(section, target);
+				if (vcenter) {
+					section = "<div class=\"vcenter\">"+section+"</div>";
+				}
+				section = Consts.STOCK_HEADER + section + Consts.STOCK_FOOTER;
+				Resource partPage = new Resource(section, Consts.TEXT + url);
+				if (title.matches(".*?[Ꭰ-Ᏼ].*?")) {
+					StringBuilder latin = new StringBuilder();
+					for (char letter : title.toCharArray()) {
+						if (letter < 'Ꭰ' || letter > 'Ᏼ') {
+							latin.append(letter);
+							continue;
+						}
+						latin.append(syl2lat.get(letter + ""));
+					}
+					title = latin + " | " + title;
+				}
+				System.out.println("\tAdding Part: '" + title + "'");
+				partPage.setTitle(title);
+				activePage = epub.addSection(title, partPage);
+
+				/*
+				 * tocsection for previous part or chapter
+				 */
+				if (toc_section.length() != 0) {
+					toc.append("<li style=\"list-style: none;\"><ul>");
+					toc.append(toc_section);
+					toc.append("</ul></li>");
+					toc_section.setLength(0);
+				}
+
+				/*
+				 * start of new toc for current part
+				 */
+				toc.append("<li class=\"toc\">");
+				toc.append("<a href=\"");
+				toc.append(url);
+				toc.append("\">");
+
+				toc.append(title);
+
+				toc.append("</a>");
+				toc.append("</li>");
+				continue;
+			}
+
+			// Chapter mark
+			if (section.contains("class=\"Chapter\"") || section.contains("class=\"Chapter_\"")) {
+				section = section.replace("class=\"Chapter_\"", "class=\"Chapter\"");
 				String url = String.format("x_%03d_chapter.xhtml", counter);
 				String title = StringUtils.substringBetween(section, "class=\"Chapter\">", "<");
 				while (title.startsWith("<")) {
@@ -504,7 +562,7 @@ public class MainApp implements Runnable {
 				}
 				System.out.println("\tAdding Chapter: '" + title + "'");
 				sectionpage.setTitle(title);
-				activeChapter = epub.addSection(title, sectionpage);
+				activePage = epub.addSection(title, sectionpage);
 
 				/*
 				 * tocsection for previous chapter
@@ -530,47 +588,7 @@ public class MainApp implements Runnable {
 				toc.append("</li>");
 				continue;
 			}
-			
-			//treat PARTS and CHAPTERS the same for file divisions
-			//Chapter that doesn't go into TOC
-			if (section.contains("class=\"Chapter_\"") || section.contains("class=\"Part_\"")) {
-				section = section.replace("class=\"Part_\"", "class=\"Chapter_\"");
-				String url = String.format("x_%03d_chapter.xhtml", counter);
-				String title = StringUtils.substringBetween(section, "class=\"Chapter_\">", "<");
-				while (title.startsWith("<")) {
-					title = StringUtils.substringAfter(title, ">");
-				}
-				title = StringUtils.substringBefore(title, "<");
-				section = targetedHtmlManipulation(section, target);
-				section = Consts.STOCK_HEADER + section + Consts.STOCK_FOOTER;
-				Resource sectionpage = new Resource(section, Consts.TEXT + url);
-				if (title.matches(".*?[Ꭰ-Ᏼ].*?")) {
-					StringBuilder latin = new StringBuilder();
-					for (char letter : title.toCharArray()) {
-						if (letter < 'Ꭰ' || letter > 'Ᏼ') {
-							latin.append(letter);
-							continue;
-						}
-						latin.append(syl2lat.get(letter + ""));
-					}
-					title = latin + " | " + title;
-				}
-				System.out.println("\tAdding no TOC Chapter: '" + title + "'");
-				sectionpage.setTitle(title);
-				activeChapter = epub.addSection(title, sectionpage);
 
-				/*
-				 * tocsection for previous chapter
-				 */
-				if (toc_section.length() != 0) {
-					toc.append("<li style=\"list-style: none;\"><ul>");
-					toc.append(toc_section);
-					toc.append("</ul></li>");
-					toc_section.setLength(0);
-				}
-				continue;
-			}
-			
 			if (StringUtils.isEmpty(StringUtils.strip(section))) {
 				System.out.println(" - SKIPPING BLANK SECTION");
 				continue;
@@ -587,7 +605,7 @@ public class MainApp implements Runnable {
 			section = Consts.STOCK_HEADER + section + Consts.STOCK_FOOTER;
 			Resource sectionpage = new Resource(section, Consts.TEXT + url);
 			res.add(sectionpage);
-			if (activeChapter != null && !StringUtils.isBlank(title)) {
+			if (activePage != null && !StringUtils.isBlank(title)) {
 				if (title.matches(".*?[Ꭰ-Ᏼ].*?")) {
 					StringBuilder latin = new StringBuilder();
 					for (char letter : title.toCharArray()) {
@@ -610,7 +628,7 @@ public class MainApp implements Runnable {
 
 				System.out.println("\tAdding Section: '" + title + "'");
 				sectionpage.setTitle(title);
-				epub.addSection(activeChapter, title, sectionpage);
+				epub.addSection(activePage, title, sectionpage);
 			} else {
 				System.out.println("\tAdding Unlabeled Section: '" + title + "'");
 				sectionpage.setTitle("section " + counter);
@@ -636,9 +654,9 @@ public class MainApp implements Runnable {
 
 	private String specials_by_target(String section, Target target) {
 		if (target.equals(Target.Kindle)) {
-			final String q1 = Pattern.quote("<div class=\"Standard\"><!-- smashwords only:begin -->");
+			final String q1 = Pattern.quote("<!-- smashwords only:begin -->");
 			final String q2 = Pattern.quote("<!-- smashwords only:end -->");
-			section = section.replaceAll("(?s)" + q1 + ".*?" + q2, "");
+			section = section.replaceAll("(?i)" + q1 + "([\\s\\S]*?)<!-- Standard -->[\\s\\S]*?" + q2, "$1");
 		}
 		return section;
 	}
@@ -701,13 +719,14 @@ public class MainApp implements Runnable {
 		Resource coverPage = null;
 		try {
 			String image = FilenameUtils.getName(settings.coverImage);
-			
+
 			String xhtml;
 			try (InputStream is_coverXhtml = getClass().getResourceAsStream("/data/epub/cover.xhtml")) {
 				xhtml = IOUtils.toString(is_coverXhtml);
 			}
 			BufferedImage bimg;
-			try (InputStream is_coverImg = FileUtils.openInputStream(new File(settings.sourcedir, settings.coverImage))) {
+			try (InputStream is_coverImg = FileUtils
+					.openInputStream(new File(settings.sourcedir, settings.coverImage))) {
 				bimg = ImageIO.read(is_coverImg);
 			}
 			int width = bimg.getWidth();
@@ -750,7 +769,7 @@ public class MainApp implements Runnable {
 				}
 			}
 			try (InputStream css = getClass().getResourceAsStream(resource)) {
-				System.out.println(" - Style sheet: "+resource);
+				System.out.println(" - Style sheet: " + resource);
 				sheet = new Resource(css, Consts.STYLES + "stylesheet.css");
 			}
 			sheet.setTitle("StyleSheet");
@@ -997,7 +1016,7 @@ public class MainApp implements Runnable {
 				int g = state.size();
 				state.pushGrouping("</div>");
 				while (!StringUtils.isEmpty(iline.next())) {
-					//skip blank lines
+					// skip blank lines
 				}
 				tmp.append(parseUntil("\\end_inset", iline, state));
 				while (state.size() > g) {
@@ -1100,8 +1119,8 @@ public class MainApp implements Runnable {
 				break whichparsing;
 			}
 			if (line.startsWith("\\begin_inset Branch smashwords")) {
-				discardUntil("", iline, state);
 				tmp.append("<!-- smashwords only:begin -->");
+				discardUntil("", iline, state);
 				tmp.append(parseUntil("\\end_inset", iline, state));
 				tmp.append("<!-- smashwords only:end -->");
 				break whichparsing;

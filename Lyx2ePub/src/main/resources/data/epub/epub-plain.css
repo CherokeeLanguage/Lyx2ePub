@@ -5,6 +5,16 @@ body {
 	text-align: justify;
 }
 
+.vcenter {
+    margin-top: 50vh;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    text-align: center;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
 .rightblock {
 	display: inline-block;
 	float: right;
@@ -313,7 +323,7 @@ ul {
 	text-indent: 0px;
 	margin-bottom: .25em;
 	margin-top: .25em;
-	text-align: left;
+	text-align: center;
 }
 
 .Section {
@@ -587,7 +597,7 @@ div.Labeling div {
 }
 
 div.Standard + div.Standard {
-	text-indent: .75em;
+	text-indent: 1.5em;
 }
 
 .Date {
