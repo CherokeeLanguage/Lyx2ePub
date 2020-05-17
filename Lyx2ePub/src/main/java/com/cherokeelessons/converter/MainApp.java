@@ -226,8 +226,17 @@ public class MainApp implements Runnable {
 					buffer.append(after);
 					continue;
 				}
-				if (fragment.contains("<div class=\"Chapter\">") && buffer.length() != 0) {
-					String before = StringUtils.substringBefore(fragment, "<div class=\"Chapter\">");
+				if (fragment.contains("<div class=\"Chapter") && buffer.length() != 0) {
+					String before = StringUtils.substringBefore(fragment, "<div class=\"Chapter");
+					String after = StringUtils.substringAfter(fragment, before);
+					buffer.append(before);
+					sections.add(buffer.toString());
+					buffer.setLength(0);
+					buffer.append(after);
+					continue;
+				}
+				if (fragment.contains("<div class=\"Part") && buffer.length() != 0) {
+					String before = StringUtils.substringBefore(fragment, "<div class=\"Part");
 					String after = StringUtils.substringAfter(fragment, before);
 					buffer.append(before);
 					sections.add(buffer.toString());
@@ -469,7 +478,10 @@ public class MainApp implements Runnable {
 				epub.addSection("Table of Contents", tocPage);
 				continue;
 			}
-			if (section.contains("class=\"Chapter\"")) {
+			//treat PARTS and CHAPTERS the same for file divisions
+			if (section.contains("class=\"Chapter\"") || section.contains("class=\"Part\"")) {
+				section = section.replace("class=\"Part\"", "class=\"Chapter\"");
+				
 				String url = String.format("x_%03d_chapter.xhtml", counter);
 				String title = StringUtils.substringBetween(section, "class=\"Chapter\">", "<");
 				while (title.startsWith("<")) {
@@ -518,7 +530,49 @@ public class MainApp implements Runnable {
 				toc.append("</li>");
 				continue;
 			}
+			
+			//treat PARTS and CHAPTERS the same for file divisions
+			//Chapter that doesn't go into TOC
+			if (section.contains("class=\"Chapter_\"") || section.contains("class=\"Part_\"")) {
+				section = section.replace("class=\"Part_\"", "class=\"Chapter_\"");
+				String url = String.format("x_%03d_chapter.xhtml", counter);
+				String title = StringUtils.substringBetween(section, "class=\"Chapter_\">", "<");
+				while (title.startsWith("<")) {
+					title = StringUtils.substringAfter(title, ">");
+				}
+				title = StringUtils.substringBefore(title, "<");
+				section = targetedHtmlManipulation(section, target);
+				section = Consts.STOCK_HEADER + section + Consts.STOCK_FOOTER;
+				Resource sectionpage = new Resource(section, Consts.TEXT + url);
+				if (title.matches(".*?[Ꭰ-Ᏼ].*?")) {
+					StringBuilder latin = new StringBuilder();
+					for (char letter : title.toCharArray()) {
+						if (letter < 'Ꭰ' || letter > 'Ᏼ') {
+							latin.append(letter);
+							continue;
+						}
+						latin.append(syl2lat.get(letter + ""));
+					}
+					title = latin + " | " + title;
+				}
+				System.out.println("\tAdding no TOC Chapter: '" + title + "'");
+				sectionpage.setTitle(title);
+				activeChapter = epub.addSection(title, sectionpage);
+
+				/*
+				 * tocsection for previous chapter
+				 */
+				if (toc_section.length() != 0) {
+					toc.append("<li style=\"list-style: none;\"><ul>");
+					toc.append(toc_section);
+					toc.append("</ul></li>");
+					toc_section.setLength(0);
+				}
+				continue;
+			}
+			
 			if (StringUtils.isEmpty(StringUtils.strip(section))) {
+				System.out.println(" - SKIPPING BLANK SECTION");
 				continue;
 			}
 			String url = String.format("x_%03d_section.xhtml", counter);
