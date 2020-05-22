@@ -244,6 +244,10 @@ ul {
 	margin-top: .25em;
 }
 
+.Standard + .Standard {
+	text-indent: 1.5em;
+}
+
 .Quotation {
 	font-style: normal;
 	font-variant: normal;
@@ -257,17 +261,51 @@ ul {
 	display: block;
 }
 
+.Quotation + .Quotation {
+	margin-top: 0px;
+}
+
 .Quote {
-	font-style: italic;
+	font-style: oblique;
 	font-variant: normal;
 	font-weight: normal;
 	text-indent: 0px;
 	margin-left: 5%;
 	margin-right: 5%;
-	margin-bottom: 1em;
-	margin-top: 1em;
+	margin-bottom: 0.75em;
+	margin-top: 0.75em;
 	font-size: 9pt;
 	display: block;
+}
+
+.Quote + .Quote {
+	margin-top: 0px;
+}
+
+.Verse {
+	font-family: cursive;
+	font-style: oblique;
+	font-variant: normal;
+	font-weight: normal;
+	text-indent: 0px;
+	margin-left: 10%;
+	margin-right: 10%;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	font-size: 9pt;
+	display: block;
+}
+
+.Standard + .Verse {
+	margin-top: 1em;
+}
+
+.Verse + .Standard {
+	margin-top: 1em;
+}
+
+.Verse + .Quote {
+	margin-top: 1em;
 }
 
 .Title {
@@ -594,10 +632,6 @@ table {
 
 div.Labeling div {
 	margin-left: 2em;
-}
-
-div.Standard + div.Standard {
-	text-indent: 1.5em;
 }
 
 .Date {
