@@ -108,6 +108,7 @@ public class MainApp implements Runnable {
 
 	public int depth = 0;
 	protected final String[] args;
+	private boolean debug = false;
 
 	@Override
 	public void run() {
@@ -123,6 +124,10 @@ public class MainApp implements Runnable {
 				String arg = iarg.next();
 				if (arg.equals("--settings")) {
 					settings_file = new File(iarg.next());
+					continue;
+				}
+				if (arg.equals("--debug")) {
+					debug=true;
 					continue;
 				}
 				throw new RuntimeException("Unknown command line switch: '" + arg + "'");
@@ -170,6 +175,9 @@ public class MainApp implements Runnable {
 				continue;
 			}
 			if (line.startsWith("\\end_body")) {
+				if (debug) {
+					System.out.println("--- "+line);
+				}
 				break;
 			}
 			String parsed = parse(line, iline, state);
@@ -886,6 +894,9 @@ public class MainApp implements Runnable {
 		StringBuilder tmp = new StringBuilder();
 		line = fixSpecials(line);
 		whichparsing: {
+			if (debug) { // && (line.startsWith("\\begin_inset")||line.startsWith("\\end_inset"))) {
+				System.out.println(line);
+			}
 			if (line.startsWith("\\paragraph_spacing ")) {
 				while (state.containsGroup("</div><!-- paragraph_spacing -->")) {
 					tmp.append(state.popGrouping());
@@ -1015,8 +1026,8 @@ public class MainApp implements Runnable {
 				tmp.append("<div class=\"box float\">");
 				int g = state.size();
 				state.pushGrouping("</div>");
-				while (!StringUtils.isEmpty(iline.next())) {
-					// skip blank lines
+				while (!StringUtils.isBlank(iline.next())) {
+					// skip until we reach a blank line
 				}
 				tmp.append(parseUntil("\\end_inset", iline, state));
 				while (state.size() > g) {
@@ -1058,10 +1069,16 @@ public class MainApp implements Runnable {
 				break whichparsing;
 			}
 			if (line.startsWith("\\begin_inset CommandInset label")) {
+				if (debug) {
+					System.out.println("=> label"+line);
+				}
 				tmp.append("<!-- Label Target -->");
 				String ref = "";
 				while (iline.hasNext()) {
-					ref = iline.next();
+					ref=iline.next();
+					if (ref.startsWith("LatexCommand")) {
+						continue;
+					}
 					if (ref.startsWith("name ")) {
 						break;
 					}
@@ -1076,6 +1093,9 @@ public class MainApp implements Runnable {
 				break whichparsing;
 			}
 			if (line.startsWith("\\begin_inset CommandInset ref")) {
+				if (debug) {
+					System.out.println("    "+line);
+				}
 				tmp.append("<!-- Cross Reference Link -->");
 				String ref = "";
 				while (iline.hasNext()) {
@@ -1098,27 +1118,42 @@ public class MainApp implements Runnable {
 				break whichparsing;
 			}
 			if (line.startsWith("\\begin_inset CommandInset line")) {
+				if (debug) {
+					System.out.println("    "+line);
+				}
 				tmp.append("<hr />");
 				discardUntil("\\end_inset", iline, new StateObject());
 				break whichparsing;
 			}
 			if (line.startsWith("\\begin_inset Argument")) {
+				if (debug) {
+					System.out.println("    "+line);
+				}
 				tmp.append("<!-- Argument -->");
 				discardUntil("\\end_inset", iline, new StateObject());
 				break whichparsing;
 			}
 			if (line.startsWith("\\begin_inset space \\hfill{}")) {
+				if (debug) {
+					System.out.println("    "+line);
+				}
 				tmp.append("<div class=\"hfill\">");
 				state.pushGrouping("</div>");
 				discardUntil("\\end_inset", iline, new StateObject());
 				break whichparsing;
 			}
 			if (line.startsWith("\\begin_inset space \\hspace*{\\fill}")) {
+				if (debug) {
+					System.out.println("    "+line);
+				}
 				tmp.append("<!-- protected hspace fill -->");
 				discardUntil("\\end_inset", iline, new StateObject());
 				break whichparsing;
 			}
 			if (line.startsWith("\\begin_inset Branch smashwords")) {
+				if (debug) {
+					System.out.println("    "+line);
+				}
 				tmp.append("<!-- smashwords only:begin -->");
 				discardUntil("", iline, state);
 				tmp.append(parseUntil("\\end_inset", iline, state));
@@ -1634,9 +1669,8 @@ public class MainApp implements Runnable {
 			if (inset.startsWith("}")) {
 				break parseErt;
 			}
-			System.out.println("'" + inset + "'");
+			System.out.println(" Unknown ERT: '" + inset + "'");
 			tmp.append(inset);
-
 		}
 		discardUntil("\\end_inset", iline, state);
 		return tmp.toString();
