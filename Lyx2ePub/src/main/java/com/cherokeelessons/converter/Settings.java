@@ -101,7 +101,7 @@ public class Settings implements Serializable {
 		svg_mode=false;
 		
 		epubCss = "epub-default.css";
-		kindleCss = "kindle-default.css";
+		kindleCss = "epub-kindle.css";
 		
 		embed_free_serif = true;
 	}
