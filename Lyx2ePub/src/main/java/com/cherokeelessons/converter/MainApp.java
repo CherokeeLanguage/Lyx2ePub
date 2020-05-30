@@ -1440,6 +1440,13 @@ public class MainApp implements Runnable {
 				break whichparsing;
 			}
 			if (line.startsWith("\\begin_inset VSpace")) {
+				if (line.contains("pheight%")) {
+					String pct = StringUtils.substringBefore(line, "pheight%");
+					pct = StringUtils.substringAfterLast(pct, " ");
+					tmp.append("<div style='margin-top: ");
+					tmp.append(pct);
+					tmp.append("%;'>&nbsp;</div>");
+				}
 				// while (state.hasGroupsToClose()) {
 				// tmp.append(state.popGrouping());
 				// }
