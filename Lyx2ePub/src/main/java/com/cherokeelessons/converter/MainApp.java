@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -37,11 +39,11 @@ import org.imgscalr.Scalr.Mode;
 import com.cherokeelessons.epub.Resource;
 
 import net.lingala.zip4j.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
 import nl.siegmann.epublib.domain.Author;
 import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.Date;
+import nl.siegmann.epublib.domain.GuideReference;
 import nl.siegmann.epublib.domain.Identifier;
 import nl.siegmann.epublib.domain.MediaType;
 import nl.siegmann.epublib.domain.Metadata;
@@ -354,14 +356,11 @@ public class MainApp implements Runnable {
 			Resource kf8 = getKF8Stylesheet();
 			res.add(kf8);
 		}
-
-		// Resource freeserif = getFontStylesheet();
-		// res.add(freeserif);
-
+		
 		Resource coverPage = getCover();
 		spine.addResource(res.add(coverPage));
 		epub.setCoverPage(coverPage);
-
+		
 		Resource titlePage = new Resource("", Consts.TEXT + "titlepage.xhtml");
 		Resource copyPage = new Resource("", Consts.TEXT + "copyright.xhtml");
 		Resource tocPage = new Resource("", Consts.TEXT + "toc.xhtml");
@@ -434,7 +433,12 @@ public class MainApp implements Runnable {
 			}
 			lsections.set(section);
 		}
-
+		
+		Resource firstDisplayPage = null;
+		Resource acknowledgementsPage = null;
+		Resource copyrightPage = null;
+		Resource dedicationPage = null;
+		
 		TOCReference activePage = null;
 		counter = 0;
 		lsections = sections.listIterator();
@@ -468,11 +472,16 @@ public class MainApp implements Runnable {
 				epub.addSection("Title Page", titlePage);
 				continue;
 			}
-			if (section.contains(">Copyright ") && section.contains(">ISBN: ") && copyPage.getSize() == 0) {
+			// && section.contains(">ISBN: ") 
+			if (section.contains(">Copyright ")&& copyPage.getSize() == 0) {
 				section = targetedHtmlManipulation(section, target);
 				section = Consts.STOCK_HEADER + section + Consts.STOCK_FOOTER;
+				copyPage.setTitle("Copyright Page");
 				copyPage.setData(asBytes(section));
 				epub.addSection("Copyright Page", copyPage);
+				if (copyrightPage == null) {
+					copyrightPage = copyPage;
+				}
 				continue;
 			}
 			if (section.contains("<!-- TOC -->") && tocPage.getSize() == 0) {
@@ -486,6 +495,7 @@ public class MainApp implements Runnable {
 			 * Part mark
 			 */
 			if (section.contains("class=\"Part\"") || section.contains("class=\"Part_\"")) {
+				boolean isNumbered = section.contains("class=\"Part\"");
 				section = section.replace("class=\"Part_\"", "class=\"Part\"");
 				String url = String.format("x_%03d_part.xhtml", counter);
 				String title = StringUtils.substringBetween(section, "class=\"Part\">", "<");
@@ -517,7 +527,17 @@ public class MainApp implements Runnable {
 				System.out.println("\tAdding Part: '" + title + "'");
 				partPage.setTitle(title);
 				activePage = epub.addSection(title, partPage);
-
+				
+				if (firstDisplayPage==null && isNumbered) {
+					firstDisplayPage = partPage;
+				}
+				if (acknowledgementsPage==null && title.toLowerCase().contains("acknowledgements")) {
+					acknowledgementsPage = partPage;
+				}
+				//dedicationPage
+				if (dedicationPage==null && title.toLowerCase().contains("dedication")) {
+					dedicationPage = partPage;
+				}
 				/*
 				 * tocsection for previous part or chapter
 				 */
@@ -545,6 +565,7 @@ public class MainApp implements Runnable {
 
 			// Chapter mark
 			if (section.contains("class=\"Chapter\"") || section.contains("class=\"Chapter_\"")) {
+				boolean isNumbered = section.contains("class=\"Chapter\"");
 				section = section.replace("class=\"Chapter_\"", "class=\"Chapter\"");
 				String url = String.format("x_%03d_chapter.xhtml", counter);
 				String title = StringUtils.substringBetween(section, "class=\"Chapter\">", "<");
@@ -554,7 +575,7 @@ public class MainApp implements Runnable {
 				title = StringUtils.substringBefore(title, "<");
 				section = targetedHtmlManipulation(section, target);
 				section = Consts.STOCK_HEADER + section + Consts.STOCK_FOOTER;
-				Resource sectionpage = new Resource(section, Consts.TEXT + url);
+				Resource chapterPage = new Resource(section, Consts.TEXT + url);
 				if (title.matches(".*?[Ꭰ-Ᏼ].*?")) {
 					StringBuilder latin = new StringBuilder();
 					for (char letter : title.toCharArray()) {
@@ -567,8 +588,19 @@ public class MainApp implements Runnable {
 					title = latin + " | " + title;
 				}
 				System.out.println("\tAdding Chapter: '" + title + "'");
-				sectionpage.setTitle(title);
-				activePage = epub.addSection(title, sectionpage);
+				chapterPage.setTitle(title);
+				activePage = epub.addSection(title, chapterPage);
+				
+				if (firstDisplayPage==null && isNumbered) {
+					firstDisplayPage = chapterPage;
+				}
+				if (acknowledgementsPage==null && title.toLowerCase().contains("acknowledgements")) {
+					acknowledgementsPage = chapterPage;
+				}
+				//dedicationPage
+				if (dedicationPage==null && title.toLowerCase().contains("dedication")) {
+					dedicationPage = chapterPage;
+				}
 
 				/*
 				 * tocsection for previous chapter
@@ -655,6 +687,30 @@ public class MainApp implements Runnable {
 
 		tocPage.setData(
 				asBytes(Consts.STOCK_HEADER + targetedHtmlManipulation(toc.toString(), target) + Consts.STOCK_FOOTER));
+		
+		//Guide adjustments
+		
+		epub.getGuide().addReference(new GuideReference(titlePage, "title-page", titlePage.getTitle()));
+		
+		epub.getGuide().addReference(new GuideReference(tocPage, "toc", tocPage.getTitle()));
+		
+		if (firstDisplayPage!=null) {
+			epub.getGuide().addReference(new GuideReference(firstDisplayPage, "text", firstDisplayPage.getTitle()));
+		}
+		
+		if (acknowledgementsPage!=null) {
+			epub.getGuide().addReference(new GuideReference(acknowledgementsPage, "acknowledgements", acknowledgementsPage.getTitle()));
+		}
+		
+		if (copyrightPage!=null) {
+			epub.getGuide().addReference(new GuideReference(copyrightPage, "copyright", copyrightPage.getTitle()));
+		}
+		
+		//dedicationPage
+		if (dedicationPage!=null) {
+			epub.getGuide().addReference(new GuideReference(dedicationPage, "dedication", dedicationPage.getTitle()));
+		}
+		
 		return epub;
 	}
 
@@ -846,14 +902,22 @@ public class MainApp implements Runnable {
 
 		Identifier uid = new Identifier();
 		uid.setScheme("uid");
-		uid.setValue(settings.ISBN_EPUB_META());
-		idList.add(uid);
+		if (!settings.ISBN_EPUB_META().endsWith("000")) {
+			uid.setValue(settings.ISBN_EPUB_META());
+			uid.setBookId(true);
+			idList.add(uid);
+		} else {
+			uid.setValue(LocalDateTime.now(ZoneId.of("EST5EDT")).toString()+"-EST5EDT");
+			uid.setBookId(true);
+			idList.add(uid);
+		}
 
-		Identifier isbn = new Identifier();
-		isbn.setScheme(Identifier.Scheme.ISBN);
-		isbn.setValue(settings.ISBN_EPUB_META());
-		isbn.setBookId(true);
-		idList.add(isbn);
+		if (!settings.ISBN_EPUB_META().endsWith("000")) {
+			Identifier isbn = new Identifier();
+			isbn.setScheme(Identifier.Scheme.ISBN);
+			isbn.setValue(settings.ISBN_EPUB_META());
+			idList.add(isbn);
+		}
 
 		for (String str_author : settings.authors) {
 			str_author = StringUtils.normalizeSpace(str_author);
