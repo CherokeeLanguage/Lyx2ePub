@@ -23,20 +23,20 @@ import javax.xml.namespace.QName;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.translate.AggregateTranslator;
-import org.apache.commons.lang3.text.translate.CharSequenceTranslator;
-import org.apache.commons.lang3.text.translate.EntityArrays;
-import org.apache.commons.lang3.text.translate.LookupTranslator;
-import org.apache.commons.lang3.text.translate.NumericEntityUnescaper;
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.text.translate.AggregateTranslator;
+import org.apache.commons.text.translate.CharSequenceTranslator;
+import org.apache.commons.text.translate.EntityArrays;
+import org.apache.commons.text.translate.LookupTranslator;
+import org.apache.commons.text.translate.NumericEntityUnescaper;
 import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Method;
 import org.imgscalr.Scalr.Mode;
 
 import com.cherokeelessons.epub.Resource;
 
-import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
 import nl.siegmann.epublib.domain.Author;
@@ -96,8 +96,8 @@ public class MainApp implements Runnable {
 	}
 
 	private final CharSequenceTranslator UNESCAPE_EXTHTML4 = new AggregateTranslator(
-			new LookupTranslator(EntityArrays.ISO8859_1_UNESCAPE()),
-			new LookupTranslator(EntityArrays.HTML40_EXTENDED_UNESCAPE()), new NumericEntityUnescaper());
+			new LookupTranslator(EntityArrays.ISO8859_1_UNESCAPE),
+			new LookupTranslator(EntityArrays.HTML40_EXTENDED_UNESCAPE), new NumericEntityUnescaper());
 
 	public MainApp(String[] args) {
 		this.args = args;
@@ -277,22 +277,17 @@ public class MainApp implements Runnable {
 	}
 
 	public void appleFy(File file) {
-		try {
-			ZipFile zip = new ZipFile(file);
-			ZipParameters parameters = new ZipParameters();
-			String fileNameInZip = Consts.META_INF + "com.apple.ibooks.display-options.xml";
-			if (fileNameInZip.startsWith("/")) {
-				fileNameInZip = StringUtils.substring(fileNameInZip, 1);
-			}
-			parameters.setFileNameInZip(fileNameInZip);
-			parameters.setSourceExternalStream(true);
-			try (InputStream is = getClass().getResourceAsStream("/data/epub/com.apple.ibooks.display-options.xml")) {
-				zip.addStream(is, parameters);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} catch (ZipException e) {
-			throw new RuntimeException(e);
+		ZipFile zip = new ZipFile(file);
+		ZipParameters parameters = new ZipParameters();
+		String fileNameInZip = Consts.META_INF + "com.apple.ibooks.display-options.xml";
+		if (fileNameInZip.startsWith("/")) {
+			fileNameInZip = StringUtils.substring(fileNameInZip, 1);
+		}
+		parameters.setFileNameInZip(fileNameInZip);
+		try (InputStream is = getClass().getResourceAsStream("/data/epub/com.apple.ibooks.display-options.xml")) {
+			zip.addStream(is, parameters);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -861,7 +856,19 @@ public class MainApp implements Runnable {
 		idList.add(isbn);
 
 		for (String str_author : settings.authors) {
-			Author author = new Author(str_author);
+			str_author = StringUtils.normalizeSpace(str_author);
+			Author author;
+			if (str_author.contains(",")) {
+				String fname = StringUtils.substringAfter(str_author, ",").trim();
+				String lname = StringUtils.substringBefore(str_author, ",").trim();
+				author = new Author(fname, lname);
+			} else if (str_author.contains(" ")) {
+				String fname = StringUtils.substringBeforeLast(str_author, " ").trim();
+				String lname = StringUtils.substringAfterLast(str_author, " ").trim();
+				author = new Author(fname, lname);
+			} else {
+				author = new Author("", str_author);
+			}
 			meta.addAuthor(author);
 		}
 

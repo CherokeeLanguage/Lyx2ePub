@@ -26,6 +26,7 @@ public class Settings implements Serializable {
 	public String title;
 	public String url;
 	public List<String> authors;
+	
 	public String copyright;
 	public List<String> subjects;
 	public boolean svg_mode;
