@@ -127,7 +127,7 @@ public class MainApp implements Runnable {
 					continue;
 				}
 				if (arg.equals("--debug")) {
-					debug=true;
+					debug = true;
 					continue;
 				}
 				throw new RuntimeException("Unknown command line switch: '" + arg + "'");
@@ -176,7 +176,7 @@ public class MainApp implements Runnable {
 			}
 			if (line.startsWith("\\end_body")) {
 				if (debug) {
-					System.out.println("--- "+line);
+					System.out.println("--- " + line);
 				}
 				break;
 			}
@@ -467,7 +467,8 @@ public class MainApp implements Runnable {
 			}
 			if (section.contains("class=\"Title") && titlePage.getSize() == 0) {
 				section = targetedHtmlManipulation(section, target);
-				section = Consts.STOCK_HEADER + "<div class=\"extraTopMargin\">" + section + "</div>" + Consts.STOCK_FOOTER;
+				section = Consts.STOCK_HEADER + "<div class=\"extraTopMargin\">" + section + "</div>"
+						+ Consts.STOCK_FOOTER;
 				titlePage.setData(asBytes(section));
 				epub.addSection("Title Page", titlePage);
 				continue;
@@ -497,11 +498,13 @@ public class MainApp implements Runnable {
 					title = StringUtils.substringAfter(title, ">");
 				}
 				title = StringUtils.substringBefore(title, "<");
-				boolean extraTopMargin = "<!-- Part -->".equals(StringUtils.strip(StringUtils.substringAfter(section, "</div>")));
-				extraTopMargin = extraTopMargin || "<!-- Part_ -->".equals(StringUtils.strip(StringUtils.substringAfter(section, "</div>")));
+				boolean extraTopMargin = "<!-- Part -->"
+						.equals(StringUtils.strip(StringUtils.substringAfter(section, "</div>")));
+				extraTopMargin = extraTopMargin
+						|| "<!-- Part_ -->".equals(StringUtils.strip(StringUtils.substringAfter(section, "</div>")));
 				section = targetedHtmlManipulation(section, target);
 				if (extraTopMargin) {
-					section = "<div class=\"extraTopMargin\">"+section+"</div>";
+					section = "<div class=\"extraTopMargin\">" + section + "</div>";
 				}
 				section = Consts.STOCK_HEADER + section + Consts.STOCK_FOOTER;
 				Resource partPage = new Resource(section, Consts.TEXT + url);
@@ -808,9 +811,7 @@ public class MainApp implements Runnable {
 
 	private Resource getFont(String name) {
 		Resource fontfile = null;
-		try {
-			InputStream cd;
-			cd = getClass().getResourceAsStream("/data/epub/fonts/" + name);
+		try (InputStream cd = getClass().getResourceAsStream("/data/epub/fonts/" + name)) {
 			fontfile = new Resource(cd, Consts.FONTS + name);
 			if (name.endsWith(".ttf")) {
 				fontfile.setMediaType(X_FONT_TTF);
@@ -829,9 +830,7 @@ public class MainApp implements Runnable {
 
 	private Resource getFrontCoverImage() {
 		Resource cover = null;
-		try {
-			InputStream cd;
-			cd = FileUtils.openInputStream(new File(settings.sourcedir, settings.coverImage));
+		try (InputStream cd = FileUtils.openInputStream(new File(settings.sourcedir, settings.coverImage))) {
 			cover = new Resource(cd, Consts.IMAGES + FilenameUtils.getName(settings.coverImage));
 			IOUtils.closeQuietly(cd);
 			cover.setTitle("Cover Image");
@@ -1070,12 +1069,12 @@ public class MainApp implements Runnable {
 			}
 			if (line.startsWith("\\begin_inset CommandInset label")) {
 				if (debug) {
-					System.out.println("=> label"+line);
+					System.out.println("=> label" + line);
 				}
 				tmp.append("<!-- Label Target -->");
 				String ref = "";
 				while (iline.hasNext()) {
-					ref=iline.next();
+					ref = iline.next();
 					if (ref.startsWith("LatexCommand")) {
 						continue;
 					}
@@ -1094,7 +1093,7 @@ public class MainApp implements Runnable {
 			}
 			if (line.startsWith("\\begin_inset CommandInset ref")) {
 				if (debug) {
-					System.out.println("    "+line);
+					System.out.println("    " + line);
 				}
 				tmp.append("<!-- Cross Reference Link -->");
 				String ref = "";
@@ -1119,7 +1118,7 @@ public class MainApp implements Runnable {
 			}
 			if (line.startsWith("\\begin_inset CommandInset line")) {
 				if (debug) {
-					System.out.println("    "+line);
+					System.out.println("    " + line);
 				}
 				tmp.append("<hr />");
 				discardUntil("\\end_inset", iline, new StateObject());
@@ -1127,7 +1126,7 @@ public class MainApp implements Runnable {
 			}
 			if (line.startsWith("\\begin_inset Argument")) {
 				if (debug) {
-					System.out.println("    "+line);
+					System.out.println("    " + line);
 				}
 				tmp.append("<!-- Argument -->");
 				discardUntil("\\end_inset", iline, new StateObject());
@@ -1135,7 +1134,7 @@ public class MainApp implements Runnable {
 			}
 			if (line.startsWith("\\begin_inset space \\hfill{}")) {
 				if (debug) {
-					System.out.println("    "+line);
+					System.out.println("    " + line);
 				}
 				tmp.append("<div class=\"hfill\">");
 				state.pushGrouping("</div>");
@@ -1144,7 +1143,7 @@ public class MainApp implements Runnable {
 			}
 			if (line.startsWith("\\begin_inset space \\hspace*{\\fill}")) {
 				if (debug) {
-					System.out.println("    "+line);
+					System.out.println("    " + line);
 				}
 				tmp.append("<!-- protected hspace fill -->");
 				discardUntil("\\end_inset", iline, new StateObject());
@@ -1152,7 +1151,7 @@ public class MainApp implements Runnable {
 			}
 			if (line.startsWith("\\begin_inset Branch smashwords")) {
 				if (debug) {
-					System.out.println("    "+line);
+					System.out.println("    " + line);
 				}
 				tmp.append("<!-- smashwords only:begin -->");
 				discardUntil("", iline, state);
@@ -1677,7 +1676,7 @@ public class MainApp implements Runnable {
 
 	}
 
-	private String processCell(String line, ListIterator<String> iline, StateObject state) {
+	private String processCell(String line, ListIterator<String> iline, @SuppressWarnings("unused") StateObject state) {
 		int span = 1;
 		StringBuilder td = new StringBuilder();
 		StringBuilder style = new StringBuilder();
@@ -1776,7 +1775,8 @@ public class MainApp implements Runnable {
 		return line;
 	}
 
-	private void discardUntil(String marker, ListIterator<String> iline, StateObject state) {
+	private void discardUntil(String marker, ListIterator<String> iline,
+			@SuppressWarnings("unused") StateObject state) {
 		parseUntil(marker, iline, new StateObject());
 	}
 
