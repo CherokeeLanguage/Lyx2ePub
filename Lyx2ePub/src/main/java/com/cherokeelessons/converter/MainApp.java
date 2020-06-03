@@ -1415,6 +1415,16 @@ public class MainApp implements Runnable {
 				discardUntil("\\end_inset", iline, state);
 				break whichparsing;
 			}
+			if (line.equals("\\begin_inset Quotes els")) {
+				tmp.append("&lsquo;");
+				discardUntil("\\end_inset", iline, state);
+				break whichparsing;
+			}
+			if (line.equals("\\begin_inset Quotes ers")) {
+				tmp.append("&rsquo;");
+				discardUntil("\\end_inset", iline, state);
+				break whichparsing;
+			}
 			if (line.equals("\\begin_inset Newline newline")) {
 				tmp.append("<br/>");
 				discardUntil("\\end_inset", iline, state);
