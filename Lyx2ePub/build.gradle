@@ -1,15 +1,23 @@
 plugins {
-  id "it.gianluz.capsule" version "1.0.3"
+    id "java"
+    id "eclipse-wtp"
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
-apply plugin: "java"
-apply plugin: "eclipse-wtp"
-apply plugin: "maven"
+version '20210205'
 
-version '20200530'
-
-sourceCompatibility = 1.8
 compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+
+compileJava {
+    options.release = 8
+}
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+        vendor = JvmVendorSpec.ADOPTOPENJDK
+    }
+}
 
 repositories {
         jcenter()
@@ -18,15 +26,17 @@ repositories {
         	url "https://github.com/psiegman/mvn-repo/raw/master/releases"
         }
     }
-    
-task fatjar(type: FatCapsule) {
-  	archiveName 'lyx2epub.jar'
-  applicationClass 'com.cherokeelessons.converter.Main'
-  capsuleManifest {
-    	jvmArgs = ['-Dfile.encoding=UTF-8']
-	}
-}
 
+jar {
+    manifest {
+        attributes "Main-Class": "com.cherokeelessons.converter.Main"
+    }
+}
+shadowJar {
+    archiveFileName = 'lyx2epub.jar'
+    mergeServiceFiles()
+}
+    
 dependencies {
 		compile 'xml-apis:xml-apis:1.4.01'
         compile 'commons-io:commons-io:2.4'
@@ -62,70 +72,25 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 
 artifacts {
     archives sourcesJar
-    archives javadocJar
+    //archives javadocJar
 }
 
 /*configurations.all {
     resolutionStrategy.cacheChangingModulesFor 30, 'seconds'
 }*/
 
-
-eclipseJdt << {
-    File f = file('.settings/org.eclipse.core.resources.prefs')
-    f.write('eclipse.preferences.version=1\n')
-    f.append('encoding/<project>=utf-8')
-    f = file('.settings/org.eclipse.core.runtime.prefs')
-    f.write('eclipse.preferences.version=1\n')
-    f.append('line.separator=\\n\n')
-}
-
-
 eclipse {
 	project {
 		name = 'Lyx2ePub'
-		natures 'org.eclipse.buildship.core.gradleprojectnature'
 	}
 	jdt {
-		sourceCompatibility=1.8
+		
 	}
 	wtp {
-		facet {
-			facets = []
-			facet name: 'jst.java', version: '1.8'
-		}
 	}
 }
 
-task "create-dirs" << {
+task "create-dirs" { doLast {
 	sourceSets*.java.srcDirs*.each { it.mkdirs() }
 	sourceSets*.resources.srcDirs*.each { it.mkdirs() }
-}
-
-eclipseJdt << {
-    File f = file('.settings/org.eclipse.core.resources.prefs')
-    f.write('eclipse.preferences.version=1\n')
-    f.append('encoding/<project>=utf-8')
-    f = file('.settings/org.eclipse.core.runtime.prefs')
-    f.write('eclipse.preferences.version=1\n')
-    f.append('line.separator=\\n\n')
-}
-
-project.afterEvaluate {
-	// use jre lib matching version used by project, not the workspace default
-	if (sourceCompatibility != null) {
-		def target = project.sourceCompatibility.toString()
-		def containerPrefix = "org.eclipse.jdt.launching.JRE_CONTAINER"
-		def containerSuffix
-		if (target =~ /1.[4-5]/) {
-			containerSuffix = '/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-' + target
-		} else if (target =~ /1.[6-8]/) {
-			containerSuffix = '/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-' + target
-		}
-		if (containerSuffix != null) {
-			project.eclipse.classpath {
-				containers.removeAll { it.startsWith(containerPrefix) }
-				containers.add(containerPrefix + containerSuffix)
-			}
-		}
-	}
-}
+}}
