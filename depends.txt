@@ -1,0 +1,181 @@
+Configuration on demand is an incubating feature.
+
+> Task :dependencies
+
+------------------------------------------------------------
+Root project 'Lyx2ePub'
+------------------------------------------------------------
+
+annotationProcessor - Annotation processors and their dependencies for source set 'main'.
+No dependencies
+
+apiElements - API elements for main. (n)
+No dependencies
+
+archives - Configuration for archive artifacts. (n)
+No dependencies
+
+compileClasspath - Compile classpath for source set 'main'.
++--- commons-io:commons-io:2.4
++--- org.apache.commons:commons-text:1.8
+|    \--- org.apache.commons:commons-lang3:3.9
++--- nl.siegmann.epublib:epublib-core:3.1
+|    +--- net.sf.kxml:kxml2:2.3.0
+|    +--- xmlpull:xmlpull:1.1.3.4d_b4_min
+|    +--- org.slf4j:slf4j-api:1.6.1 -> 1.7.12
+|    \--- org.slf4j:slf4j-simple:1.6.1
+|         \--- org.slf4j:slf4j-api:1.6.1 -> 1.7.12
++--- org.imgscalr:imgscalr-lib:4.2
++--- net.sf.kxml:kxml2:2.3.0
++--- org.w3c.css:sac:1.3
++--- net.sf.saxon:Saxon-HE:9.6.0-6
++--- org.slf4j:slf4j-nop:1.7.12
+|    \--- org.slf4j:slf4j-api:1.7.12
++--- com.io7m.xom:xom:1.2.10
+|    +--- xml-apis:xml-apis:1.3.03 -> 1.4.01
+|    +--- xerces:xercesImpl:2.8.0
+|    |    \--- xml-apis:xml-apis:1.3.03 -> 1.4.01
+|    \--- xalan:xalan:2.7.0
+|         \--- xml-apis:xml-apis:2.0.2 -> 1.4.01
++--- net.lingala.zip4j:zip4j:2.6.0
++--- com.fasterxml.jackson.core:jackson-databind:2.11.0
+|    +--- com.fasterxml.jackson.core:jackson-annotations:2.11.0
+|    \--- com.fasterxml.jackson.core:jackson-core:2.11.0
+\--- com.github.CherokeeLanguage:SimpleTextUi:-SNAPSHOT
+
+compileOnly - Compile only dependencies for source set 'main'. (n)
+No dependencies
+
+default - Configuration for default artifacts. (n)
+No dependencies
+
+implementation - Implementation only dependencies for source set 'main'. (n)
++--- commons-io:commons-io:2.4 (n)
++--- org.apache.commons:commons-text:1.8 (n)
++--- nl.siegmann.epublib:epublib-core:3.1 (n)
++--- org.imgscalr:imgscalr-lib:4.2 (n)
++--- net.sf.kxml:kxml2:2.3.0 (n)
++--- org.w3c.css:sac:1.3 (n)
++--- net.sf.saxon:Saxon-HE:9.6.0-6 (n)
++--- org.slf4j:slf4j-nop:1.7.12 (n)
++--- com.io7m.xom:xom:1.2.10 (n)
++--- net.lingala.zip4j:zip4j:2.6.0 (n)
++--- com.fasterxml.jackson.core:jackson-databind:2.11.0 (n)
+\--- com.github.CherokeeLanguage:SimpleTextUi:-SNAPSHOT (n)
+
+runtimeClasspath - Runtime classpath of source set 'main'.
++--- commons-io:commons-io:2.4
++--- org.apache.commons:commons-text:1.8
+|    \--- org.apache.commons:commons-lang3:3.9
++--- nl.siegmann.epublib:epublib-core:3.1
+|    +--- net.sf.kxml:kxml2:2.3.0
+|    +--- xmlpull:xmlpull:1.1.3.4d_b4_min
+|    +--- org.slf4j:slf4j-api:1.6.1 -> 1.7.12
+|    \--- org.slf4j:slf4j-simple:1.6.1
+|         \--- org.slf4j:slf4j-api:1.6.1 -> 1.7.12
++--- org.imgscalr:imgscalr-lib:4.2
++--- net.sf.kxml:kxml2:2.3.0
++--- org.w3c.css:sac:1.3
++--- net.sf.saxon:Saxon-HE:9.6.0-6
++--- org.slf4j:slf4j-nop:1.7.12
+|    \--- org.slf4j:slf4j-api:1.7.12
++--- com.io7m.xom:xom:1.2.10
+|    +--- xml-apis:xml-apis:1.3.03 -> 1.4.01
+|    +--- xerces:xercesImpl:2.8.0
+|    |    \--- xml-apis:xml-apis:1.3.03 -> 1.4.01
+|    \--- xalan:xalan:2.7.0
+|         \--- xml-apis:xml-apis:2.0.2 -> 1.4.01
++--- net.lingala.zip4j:zip4j:2.6.0
++--- com.fasterxml.jackson.core:jackson-databind:2.11.0
+|    +--- com.fasterxml.jackson.core:jackson-annotations:2.11.0
+|    \--- com.fasterxml.jackson.core:jackson-core:2.11.0
+\--- com.github.CherokeeLanguage:SimpleTextUi:-SNAPSHOT
+
+runtimeElements - Elements of runtime for main. (n)
+No dependencies
+
+runtimeOnly - Runtime only dependencies for source set 'main'. (n)
+No dependencies
+
+shadow
+No dependencies
+
+shadowRuntimeElements (n)
+No dependencies
+
+testAnnotationProcessor - Annotation processors and their dependencies for source set 'test'.
+No dependencies
+
+testCompileClasspath - Compile classpath for source set 'test'.
++--- commons-io:commons-io:2.4
++--- org.apache.commons:commons-text:1.8
+|    \--- org.apache.commons:commons-lang3:3.9
++--- nl.siegmann.epublib:epublib-core:3.1
+|    +--- net.sf.kxml:kxml2:2.3.0
+|    +--- xmlpull:xmlpull:1.1.3.4d_b4_min
+|    +--- org.slf4j:slf4j-api:1.6.1 -> 1.7.12
+|    \--- org.slf4j:slf4j-simple:1.6.1
+|         \--- org.slf4j:slf4j-api:1.6.1 -> 1.7.12
++--- org.imgscalr:imgscalr-lib:4.2
++--- net.sf.kxml:kxml2:2.3.0
++--- org.w3c.css:sac:1.3
++--- net.sf.saxon:Saxon-HE:9.6.0-6
++--- org.slf4j:slf4j-nop:1.7.12
+|    \--- org.slf4j:slf4j-api:1.7.12
++--- com.io7m.xom:xom:1.2.10
+|    +--- xml-apis:xml-apis:1.3.03 -> 1.4.01
+|    +--- xerces:xercesImpl:2.8.0
+|    |    \--- xml-apis:xml-apis:1.3.03 -> 1.4.01
+|    \--- xalan:xalan:2.7.0
+|         \--- xml-apis:xml-apis:2.0.2 -> 1.4.01
++--- net.lingala.zip4j:zip4j:2.6.0
++--- com.fasterxml.jackson.core:jackson-databind:2.11.0
+|    +--- com.fasterxml.jackson.core:jackson-annotations:2.11.0
+|    \--- com.fasterxml.jackson.core:jackson-core:2.11.0
+\--- com.github.CherokeeLanguage:SimpleTextUi:-SNAPSHOT
+
+testCompileOnly - Compile only dependencies for source set 'test'. (n)
+No dependencies
+
+testImplementation - Implementation only dependencies for source set 'test'. (n)
+No dependencies
+
+testRuntimeClasspath - Runtime classpath of source set 'test'.
++--- commons-io:commons-io:2.4
++--- org.apache.commons:commons-text:1.8
+|    \--- org.apache.commons:commons-lang3:3.9
++--- nl.siegmann.epublib:epublib-core:3.1
+|    +--- net.sf.kxml:kxml2:2.3.0
+|    +--- xmlpull:xmlpull:1.1.3.4d_b4_min
+|    +--- org.slf4j:slf4j-api:1.6.1 -> 1.7.12
+|    \--- org.slf4j:slf4j-simple:1.6.1
+|         \--- org.slf4j:slf4j-api:1.6.1 -> 1.7.12
++--- org.imgscalr:imgscalr-lib:4.2
++--- net.sf.kxml:kxml2:2.3.0
++--- org.w3c.css:sac:1.3
++--- net.sf.saxon:Saxon-HE:9.6.0-6
++--- org.slf4j:slf4j-nop:1.7.12
+|    \--- org.slf4j:slf4j-api:1.7.12
++--- com.io7m.xom:xom:1.2.10
+|    +--- xml-apis:xml-apis:1.3.03 -> 1.4.01
+|    +--- xerces:xercesImpl:2.8.0
+|    |    \--- xml-apis:xml-apis:1.3.03 -> 1.4.01
+|    \--- xalan:xalan:2.7.0
+|         \--- xml-apis:xml-apis:2.0.2 -> 1.4.01
++--- net.lingala.zip4j:zip4j:2.6.0
++--- com.fasterxml.jackson.core:jackson-databind:2.11.0
+|    +--- com.fasterxml.jackson.core:jackson-annotations:2.11.0
+|    \--- com.fasterxml.jackson.core:jackson-core:2.11.0
+\--- com.github.CherokeeLanguage:SimpleTextUi:-SNAPSHOT
+
+testRuntimeOnly - Runtime only dependencies for source set 'test'. (n)
+No dependencies
+
+(*) - dependencies omitted (listed previously)
+
+(n) - Not resolved (configuration is not meant to be resolved)
+
+A web-based, searchable dependency report is available by adding the --scan option.
+
+BUILD SUCCESSFUL in 869ms
+1 actionable task: 1 executed
